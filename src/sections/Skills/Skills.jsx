@@ -11,24 +11,24 @@ function Skills() {
                 <Skill skillname="HTML"/>
                 <Skill skillname="CSS"/>
                 <Skill skillname="Javascript"/>
-                <Skill skillname="react"/>
+                <Skill skillname="React"/>
                 <Skill skillname="Node"/>
             </div>
             <hr/>
             <div className={styles.skillList}>
-                <Skill skillname="HTML"/>
-                <Skill skillname="CSS"/>
-                <Skill skillname="Javascript"/>
-                <Skill skillname="react"/>
-                <Skill skillname="Node"/>
+                <Skill skillname="Python"/>
+                <Skill skillname="C++"/>
+                <Skill skillname="Tailwind"/>
+                <Skill skillname="C"/>
+                <Skill skillname="Express"/>
             </div>
             <hr/>
             <div className={styles.skillList}>
-                <Skill skillname="HTML"/>
-                <Skill skillname="CSS"/>
-                <Skill skillname="Javascript"/>
-                <Skill skillname="react"/>
-                <Skill skillname="Node"/>
+                <Skill skillname="Java"/>
+                <Skill skillname="MySQL"/>
+                <Skill skillname="MongoDB"/>
+                <Skill skillname="Docker"/>
+                <Skill skillname="Postman"/>
             </div>
         </section>
     )

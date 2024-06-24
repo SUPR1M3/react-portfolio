@@ -5,7 +5,7 @@ function ProjectCard(props) {
     <a href={props.link} target='_blank'>
         <img className='hover' src={props.icon} alt="Viberr icon"/>
         <h3>{props.heading}</h3>
-        <p>Streaming App</p>
+        <p>{props.desc}</p>
     </a>
   )
 }

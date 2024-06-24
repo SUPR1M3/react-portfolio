@@ -25,16 +25,16 @@ function Hero() {
                 <h2>FullStack Developer</h2>
                 <span>
                     <a href="https://twitter.com/" target="_blank">
-                        <img src={TwitterLight} style={{opacity:theme==='light'?1:0}} alt ="Twitter icon light"/>
-                        <img src={TwitterDark} style={{opacity:theme==='light'?0:1}} alt ="Twitter icon dark"/>
+                        <img src={TwitterLight} style={{opacity:theme==='light'?1:0,zIndex:theme==='light'?1:0}} alt ="Twitter icon light"/>
+                        <img src={TwitterDark} style={{opacity:theme==='light'?0:1,zIndex:theme==='light'?0:1}} alt ="Twitter icon dark"/>
                     </a>
                     <a href="https://www.linkedin.com/in/suraj-singh41/" target="_blank">
-                        <img src={LinkedinLight} style={{opacity:theme==='light'?1:0}} alt ="Linkedin icon light"/>
-                        <img src={LinkedinDark} style={{opacity:theme==='light'?0:1}} alt ="Linkedin icon dark"/>
+                        <img src={LinkedinLight} style={{opacity:theme==='light'?1:0,zIndex:theme==='light'?1:0}} alt ="Linkedin icon light"/>
+                        <img src={LinkedinDark} style={{opacity:theme==='light'?0:1,zIndex:theme==='light'?0:1}} alt ="Linkedin icon dark"/>
                     </a>
                     <a href="https://github.com/SUPR1M3" target="_blank">
-                        <img src={GithubLight} style={{opacity:theme==='light'?1:0}} alt ="Github icon light"/>
-                        <img src={GithubDark} style={{opacity:theme==='light'?0:1}} alt ="Github icon dark"/>
+                        <img src={GithubLight} style={{opacity:theme==='light'?1:0,zIndex:theme==='light'?1:0}} alt ="Github icon light"/>
+                        <img src={GithubDark} style={{opacity:theme==='light'?0:1,zIndex:theme==='light'?0:1}} alt ="Github icon dark"/>
                     </a>
                 </span>
                 <p className={styles.description}>With a passion for building web apps and internal tools for commercial businesses from scratch.</p>
