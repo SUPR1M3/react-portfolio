@@ -18,16 +18,87 @@
 }
 body{
   background-color: var(--background-color);
-  display: flex;
-  justify-content: center;
-  margin:0 auto 60px;
+  margin: 0;
   transition: background-color 1s ease-in;
+  overflow: hidden; /* Prevent scrolling on body but allow it on child containers */
 }
 #root{
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  min-height: 100vh;
+}
 
+/* Horizontal scrolling container */
+.horizontal-scroll-container {
+  display: flex;
+  width: 100vw; /* Container viewport is 100vw */
+  height: 100vh;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  /* Hide scrollbar for cleaner look */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.horizontal-section {
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0; /* Prevent sections from shrinking */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  position: relative;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+/* Footer positioning */
+footer {
+  position: relative;
+  z-index: 100;
+  background-color: var(--background-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Scroll indicators */
+.scroll-indicator {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1001;
+  pointer-events: none;
+}
+
+.scroll-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.scroll-dot.active {
+  background: var(--btn-color);
+  transform: scale(1.2);
+}
+
+/* Light mode - Better visibility */
+[data-theme='light'] .scroll-dot {
+  background: rgba(128, 128, 128, 0.5); /* Gray for inactive dots */
+}
+
+[data-theme='light'] .scroll-dot.active {
+  background: #000000; /* Black for active dot */
 }
 
 h1,h2,h3,p{
@@ -68,9 +139,6 @@ p{
 }
 
 @media (width>=800px){
-  #root{
-    gap:100px;
-  }
   h1{
     font-size: 40px;
   }
@@ -86,9 +154,6 @@ p{
   }
 }
 @media (width>=1400px){
-  #root{
-    gap:200px;
-  }
   h1{
     font-size: 48px;
   }

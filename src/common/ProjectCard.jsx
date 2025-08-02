@@ -3,7 +3,7 @@ import React from 'react';
 function ProjectCard(props) {
   return (
     <a href={props.link} target='_blank'>
-        <img className='hover' src={props.icon} alt="Viberr icon"/>
+        <img className='hover' src={props.icon} alt="Viberr icon" style={{zIndex: -1}}/>
         <h3>{props.heading}</h3>
         <p>{props.desc}</p>
     </a>

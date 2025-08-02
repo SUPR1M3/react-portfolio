@@ -14,7 +14,7 @@ function Contact() {
             });
     }
     return (
-        <section id='contact' className={styles.container}>
+        <section className={styles.container}>
             <h1 className='sectionTitle'>Contact</h1>
             <form action="" onSubmit={sendEmail}>
                 <div className='formGroup' >

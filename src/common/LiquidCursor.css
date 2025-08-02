@@ -1,0 +1,188 @@
+/* Visible cursor dot */
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  /* Removed transform to fix positioning - JS will handle centering */
+  margin-left: -4px;
+  margin-top: -4px;
+  transition: opacity 0.1s ease-out;
+}
+
+.cursor-dot.light {
+  background-color: #000000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.cursor-dot.dark {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.liquid-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  filter: url(#goo);
+  overflow: hidden;
+}
+
+.cursor-ball {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: none;
+  will-change: left, top;
+}
+
+/* Perfect medium-large-medium sizing for optimal flow and blending */
+.cursor-ball-1 {
+  width: 100px;
+  height: 100px;
+  opacity: 1;
+}
+
+.cursor-ball-2 {
+  width: 160px;
+  height: 160px;
+  opacity: 1;
+}
+
+.cursor-ball-3 {
+  width: 100px;
+  height: 100px;
+  opacity: 1;
+}
+
+/* Light theme - Medium dark grey liquid */
+.liquid-cursor.light .cursor-ball {
+  background: 
+    /* Clean medium dark grey base */
+    radial-gradient(ellipse at 35% 35%, rgba(90, 90, 90, 0.95) 0%, rgba(70, 70, 70, 1) 60%, rgba(50, 50, 50, 1) 100%),
+    /* Subtle flow shimmer */
+    linear-gradient(135deg, 
+      rgba(110, 110, 110, 0.08) 0%,
+      rgba(80, 80, 80, 0.08) 50%,
+      rgba(100, 100, 100, 0.08) 100%);
+  box-shadow: 
+    /* Light internal glow for flow */
+    inset 0 0 15px rgba(255, 255, 255, 0.06),
+    inset -3px -3px 10px rgba(120, 120, 120, 0.04),
+    inset 3px 3px 10px rgba(0, 0, 0, 0.3),
+    /* Gentle outer flow */
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(100, 100, 100, 0.1);
+}
+
+/* Dark theme - Light and flowy water-like bright liquid */
+.liquid-cursor.dark .cursor-ball {
+  background: 
+    /* Clean water-like base */
+    radial-gradient(ellipse at 35% 35%, rgba(220, 220, 230, 1) 0%, rgba(180, 180, 190, 1) 60%, rgba(140, 140, 150, 1) 100%),
+    /* Subtle flow shimmer */
+    linear-gradient(135deg, 
+      rgba(120, 160, 255, 0.08) 0%,
+      rgba(160, 120, 255, 0.08) 50%,
+      rgba(120, 200, 160, 0.08) 100%);
+  box-shadow: 
+    /* Light internal highlights for flow */
+    inset 0 0 15px rgba(0, 0, 0, 0.06),
+    inset -3px -3px 10px rgba(60, 120, 255, 0.08),
+    inset 3px 3px 10px rgba(255, 255, 255, 0.15),
+    /* Gentle outer flow */
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 25px rgba(120, 160, 255, 0.15);
+}
+
+/* Gentle flow movement effects */
+.cursor-ball::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  opacity: 0.15;
+  animation: gentleWaterFlow 12s ease-in-out infinite;
+  z-index: 1;
+}
+
+.liquid-cursor.light .cursor-ball::before {
+  background: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    rgba(255, 255, 255, 0.03) 80%, 
+    transparent 100%);
+}
+
+.liquid-cursor.dark .cursor-ball::before {
+  background: radial-gradient(circle, 
+    rgba(0, 0, 0, 0.1) 0%, 
+    rgba(0, 0, 0, 0.02) 80%, 
+    transparent 100%);
+}
+
+@keyframes gentleWaterFlow {
+  0%, 100% {
+    opacity: 0.1;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: translate(1px, -0.5px) scale(1.03);
+  }
+}
+
+/* Hide cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .liquid-cursor, .cursor-dot {
+    display: none;
+  }
+}
+
+/* Light hover effects for flowy water feel */
+.liquid-cursor.light .cursor-ball:hover,
+button:hover ~ .liquid-cursor.light .cursor-ball,
+a:hover ~ .liquid-cursor.light .cursor-ball {
+  background: 
+    radial-gradient(ellipse at 35% 35%, rgba(110, 110, 110, 1) 0%, rgba(80, 80, 80, 1) 60%, rgba(60, 60, 60, 1) 100%),
+    linear-gradient(135deg, 
+      rgba(130, 130, 130, 0.12) 0%,
+      rgba(90, 90, 90, 0.12) 50%,
+      rgba(120, 120, 120, 0.12) 100%);
+  transform: translate(-50%, -50%) scale(1.02);
+  box-shadow: 
+    inset 0 0 18px rgba(255, 255, 255, 0.08),
+    inset -4px -4px 12px rgba(140, 140, 140, 0.06),
+    inset 4px 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(120, 120, 120, 0.2),
+    0 0 60px rgba(100, 100, 100, 0.15);
+}
+
+.liquid-cursor.dark .cursor-ball:hover,
+button:hover ~ .liquid-cursor.dark .cursor-ball,
+a:hover ~ .liquid-cursor.dark .cursor-ball {
+  background: 
+    radial-gradient(ellipse at 35% 35%, rgba(240, 240, 250, 1) 0%, rgba(200, 200, 210, 1) 60%, rgba(160, 160, 170, 1) 100%),
+    linear-gradient(135deg, 
+      rgba(140, 180, 255, 0.12) 0%,
+      rgba(180, 140, 255, 0.12) 50%,
+      rgba(140, 220, 180, 0.12) 100%);
+  transform: translate(-50%, -50%) scale(1.02);
+  box-shadow: 
+    inset 0 0 18px rgba(0, 0, 0, 0.08),
+    inset -4px -4px 12px rgba(80, 140, 255, 0.1),
+    inset 4px 4px 12px rgba(255, 255, 255, 0.2),
+    0 0 30px rgba(140, 180, 255, 0.25),
+    0 0 60px rgba(180, 140, 255, 0.2);
+} 

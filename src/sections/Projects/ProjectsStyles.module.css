@@ -1,38 +1,441 @@
+/* Projects Container */
 .container {
-    display:flex;
+    display: flex;
     flex-direction: column;
     text-align: center;
-
-    img{
-        max-width:250px;
-        align-self:center;
-        background-color: var(--project-card-bg);
-        border-radius: 20px;
-        transition: background-color 1s ease-in;
-    }
-
-    a{
-        width:fit-content;
-        text-decoration: none;
-        color:#222;
-        transition:transform 200ms ease-in-out;
-    }
-    a:hover{
-        transform: scale(1.05);
-    }
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 }
-.projectsContainer{
-    display:flex;
+
+/* Projects Wrapper - Contains carousel */
+.projectsWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    height: 500px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Carousel Container */
+.carouselContainer {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 420px;
+    perspective: 1200px;
+    perspective-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+}
+
+/* 3D Carousel Space */
+.carousel3d {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Individual Project Cards */
+.projectCard {
+    position: absolute;
+    width: 280px;
+    height: 340px;
+    left: 50%;
+    top: 50%;
+    margin-left: -140px;
+    margin-top: -170px;
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    isolation: isolate;
+}
+
+/* Card Front Face - Active Card (Glassmorphic) */
+.cardFront {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.15) 100%);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    color: white;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap:30px;
+    justify-content: space-between;
+    text-align: center;
+    transition: all 0.3s ease;
+    backface-visibility: hidden;
+    overflow: hidden;
+    z-index: 2;
+    transform-style: preserve-3d;
 }
 
-@media(width>=800px){
-    .projectsContainer{
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        padding: 0 30px;
+/* Card Front Face - Inactive Cards (Solid) */
+.cardFrontInactive {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, 
+        rgba(var(--project-color-rgb), 0.8) 0%,
+        rgba(var(--project-color-rgb), 0.6) 100%);
+    border: 2px solid rgba(var(--project-color-rgb), 0.9);
+    border-radius: 24px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    transition: all 0.3s ease;
+    backface-visibility: hidden;
+    overflow: hidden;
+    z-index: 2;
+}
+
+/* Card Glow Effect */
+.cardGlow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    border-radius: 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    filter: blur(15px);
+    pointer-events: none;
+}
+
+/* Card Image */
+.cardImage {
+    width: 70px;
+    height: 70px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cardImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+/* Card Title */
+.cardTitle {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: inherit;
+    transition: color 1s ease-in;
+}
+
+/* Card Category */
+.cardCategory {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 1s ease-in;
+}
+
+/* Card Description */
+.cardDescription {
+    font-size: 0.9rem;
+    margin: 0 0 0.8rem 0;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.3;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    transition: color 1s ease-in;
+}
+
+/* Tech Stack */
+.techStack {
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.techLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.25rem;
+    transition: color 1s ease-in;
+}
+
+.techText {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    transition: color 1s ease-in;
+}
+
+/* Project Link */
+.projectLink {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.projectLink:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Center Card (Active) */
+.projectCardCenter {
+    z-index: 5 !important;
+}
+
+.projectCardCenter .cardGlow {
+    opacity: 0.8;
+    animation: pulse 2s infinite;
+}
+
+.projectCardCenter .cardFront {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.25) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+/* Hover Effects */
+.projectCard:hover .cardGlow {
+    opacity: 0.6;
+    filter: blur(20px);
+    transform: translate(-50%, -50%) scale(1.02);
+}
+
+.projectCard:hover .cardFront {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.projectCard:hover .cardImage {
+    transform: scale(1.1);
+}
+
+/* Navigation Buttons */
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease, color 1s ease-in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    user-select: none;
+}
+
+.navLeft {
+    left: calc(50% - 395px);
+}
+
+.navRight {
+    right: calc(50% - 395px);
+}
+
+.navButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.navButton:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Auto-rotation Toggle */
+.autoRotateToggle {
+    position: absolute;
+    top: -10px;
+    right: calc(50% - 395px);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease, color 1s ease-in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.autoRotateToggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+/* Project Counter */
+.projectCounter {
+    position: absolute;
+    bottom: -48px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    padding: 8px 16px;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 2000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: color 1s ease-in, background 1s ease-in, border 1s ease-in, box-shadow 1s ease-in;
+}
+
+/* Light mode project counter */
+[data-theme='light'] .projectCounter {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1);
     }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .carouselContainer {
+        height: 350px;
+        width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .projectCard {
+        width: 240px;
+        height: 300px;
+        margin-left: -120px;
+        margin-top: -150px;
+    }
+    
+    .cardFront,
+    .cardFrontInactive {
+        padding: 1.25rem;
+    }
+    
+    .cardTitle {
+        font-size: 1.2rem;
+    }
+    
+    .cardDescription {
+        font-size: 0.8rem;
+    }
+    
+    .cardImage {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .navButton {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+    
+    .navLeft {
+        left: 10px;
+    }
+    
+    .navRight {
+        right: 10px;
+    }
+    
+    .autoRotateToggle {
+        right: 10px;
+        top: 10px;
+    }
+}
+
+/* Enhanced styling for inactive cards */
+.cardFrontInactive .cardTitle,
+.cardFrontInactive .cardCategory,
+.cardFrontInactive .cardDescription,
+.cardFrontInactive .techLabel,
+.cardFrontInactive .techText {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
