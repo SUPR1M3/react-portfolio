@@ -1,6 +1,6 @@
 import React from 'react';
 import { useResumePreview } from './ResumePreviewContext';
-import CV from '../assets/Resume_Suraj_Singh.pdf';
+import CV from '../assets/Suraj_Singh_Resume_Final.pdf';
 import './ResumePreview.css';
 
 export default function ResumePreview() {

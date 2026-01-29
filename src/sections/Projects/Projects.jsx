@@ -5,6 +5,9 @@ import PortFolio from '../../assets/Favicon.png';
 import BookLetter from '../../assets/BookLetterIcon.png';
 import SpaceInvaders from '../../assets/SpaceShip.png';
 import ReelGood from '../../assets/ReelGoodIcon.png';
+import PacManRL from '../../assets/PacManRLIcon.png';
+import LinkBot from '../../assets/LinkBotIcon.png';
+import RocketCanvas from '../../assets/RocketCanvasIcon.png';
 
 function Projects() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,6 +72,36 @@ function Projects() {
             color: "#9932CC", 
             colorRgb: hexToRgb("#9932CC"),
             tech: "React, CSS Modules, Vite"
+        },
+        { 
+            name: "LinkBot", 
+            description: "LinkedIn Outreach Automation Bot", 
+            category: "Automation Tool",
+            link: "https://github.com/SUPR1M3/OutReach-Bot", 
+            icon: LinkBot, 
+            color: "#0077B5", 
+            colorRgb: hexToRgb("#0077B5"),
+            tech: "Python, Selenium, Automation"
+        },
+        { 
+            name: "RocketCanvas", 
+            description: "Real-time Collaborative Canvas Design Editor", 
+            category: "Web App",
+            link: "https://github.com/SUPR1M3/RocketiumTest", 
+            icon: RocketCanvas, 
+            color: "#FF6B35", 
+            colorRgb: hexToRgb("#FF6B35"),
+            tech: "React, Redux, Fabric.js, Socket.io, MongoDB"
+        },
+        { 
+            name: "PacManRL", 
+            description: "Reinforcement Learning Pac-Man Agent", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/Pacman_RL_with_feedback-master", 
+            icon: PacManRL, 
+            color: "#FFD700", 
+            colorRgb: hexToRgb("#FFD700"),
+            tech: "Python, Q-Learning, Function Approximation"
         }
     ];
 

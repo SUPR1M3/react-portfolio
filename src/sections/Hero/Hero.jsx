@@ -45,7 +45,7 @@ function Hero() {
                         <img src={GithubDark} style={{opacity:theme==='light'?0:1}} alt ="Github icon dark"/>
                     </a>
                 </span>
-                <p className={styles.description}>With a passion for building web apps and internal tools for commercial businesses from scratch.</p>
+                <p className={styles.description}>With a passion for building AI-powered web apps and internal tools for commercial businesses from scratch.</p>
                 <div 
                     ref={resumeButtonRef}
                     className={styles.resumeButtonContainer}
