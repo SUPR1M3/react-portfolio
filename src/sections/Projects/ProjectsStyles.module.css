@@ -18,6 +18,8 @@
     margin: 90px 0 14px;
     line-height: 1;
     text-align: center;
+    position: relative;
+    z-index: 10; /* above liquid cursor */
 }
 
 /* Wrapper for the infinite-scrolling wall */
@@ -48,15 +50,17 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 56px; /* small fade band */
+    height: 64px; /* small fade band */
     pointer-events: none;
     /* Fade from page background (dark/light) to transparent */
     background: linear-gradient(
         to bottom,
         var(--background-color) 0%,
+        rgba(0, 0, 0, 0.1) 40%,
         rgba(0, 0, 0, 0) 100%
     );
-    z-index: 3;
+    /* Above cards, still below global cursor (which lives in its own stacking context) */
+    z-index: 1;
 }
 
 /* Track that actually moves; also the grid container */

@@ -151,6 +151,7 @@ p{
 
   .sectionTitle{
     margin-bottom:60px;
+    z-index : 3
   }
 }
 @media (width>=1400px){
