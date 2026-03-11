@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './MoreNavigation.css';
 
 const MoreNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+  const hoverIntentTimeoutRef = useRef(null);
+  const scrollTargetLeftRef = useRef(null);
+  const isScrollLockedRef = useRef(false);
+  const queuedSectionIdRef = useRef(null);
+  const activeTargetSectionIdRef = useRef(null);
 
   const navigationItems = [
     { id: 'hero', label: 'Home', icon: '🏠' },
@@ -19,26 +25,111 @@ const MoreNavigation = () => {
   const svgSize = outerRadius * 2;
   const middleRadius = (innerRadius + outerRadius) / 2;
 
-  const scrollToSection = (sectionId, shouldCloseMenu = false) => {
-    const container = document.querySelector('.horizontal-scroll-container');
-    
-    if (container) {
-      // Calculate the horizontal position for the target section
-      const sections = ['hero', 'skills', 'projects', 'contact'];
-      const sectionIndex = sections.indexOf(sectionId);
-      
-      if (sectionIndex !== -1) {
-        const scrollLeft = sectionIndex * window.innerWidth;
-        container.scrollTo({
-          left: scrollLeft,
-          behavior: 'smooth'
-        });
+  useEffect(() => {
+    containerRef.current = document.querySelector('.horizontal-scroll-container');
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      if (!isScrollLockedRef.current) return;
+      if (scrollTargetLeftRef.current == null) return;
+
+      // Consider the scroll "done" when close to the target.
+      const diff = Math.abs(container.scrollLeft - scrollTargetLeftRef.current);
+      if (diff <= 2) {
+        isScrollLockedRef.current = false;
+        scrollTargetLeftRef.current = null;
+
+        // If user hovered another item during the scroll, run it next.
+        const queued = queuedSectionIdRef.current;
+        if (queued && queued !== activeTargetSectionIdRef.current) {
+          queuedSectionIdRef.current = null;
+          // Let snap settle for a moment before starting the next smooth scroll.
+          window.setTimeout(() => {
+            requestScrollToSection(queued, false);
+          }, 60);
+        }
       }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const getScrollLeftForSection = (sectionId) => {
+    const sections = ['hero', 'skills', 'projects', 'contact'];
+    const sectionIndex = sections.indexOf(sectionId);
+    if (sectionIndex === -1) return null;
+    return sectionIndex * window.innerWidth;
+  };
+
+  const requestScrollToSection = (sectionId, shouldCloseMenu = false) => {
+    const container = containerRef.current || document.querySelector('.horizontal-scroll-container');
+    if (!container) return;
+
+    const targetLeft = getScrollLeftForSection(sectionId);
+    if (targetLeft == null) return;
+
+    // If we’re mid smooth-scroll, queue the latest hover target.
+    if (isScrollLockedRef.current) {
+      queuedSectionIdRef.current = sectionId;
+      if (shouldCloseMenu) setIsOpen(false);
+      return;
     }
-    
-    // Close the menu only if explicitly requested (on click, not hover)
+
+    // Avoid re-triggering smooth scroll to the same place.
+    if (Math.abs(container.scrollLeft - targetLeft) <= 2) {
+      activeTargetSectionIdRef.current = sectionId;
+      if (shouldCloseMenu) setIsOpen(false);
+      return;
+    }
+
+    activeTargetSectionIdRef.current = sectionId;
+    isScrollLockedRef.current = true;
+    scrollTargetLeftRef.current = targetLeft;
+    queuedSectionIdRef.current = null;
+
+    container.scrollTo({
+      left: targetLeft,
+      behavior: 'smooth',
+    });
+
+    // Failsafe unlock in case scroll events don’t land exactly on target.
+    window.setTimeout(() => {
+      if (!isScrollLockedRef.current) return;
+      isScrollLockedRef.current = false;
+      scrollTargetLeftRef.current = null;
+      const queued = queuedSectionIdRef.current;
+      if (queued && queued !== activeTargetSectionIdRef.current) {
+        queuedSectionIdRef.current = null;
+        requestScrollToSection(queued, false);
+      }
+    }, 700);
+
     if (shouldCloseMenu) {
       setIsOpen(false);
+    }
+  };
+
+  const scheduleHoverScroll = (sectionId) => {
+    if (hoverIntentTimeoutRef.current) {
+      clearTimeout(hoverIntentTimeoutRef.current);
+      hoverIntentTimeoutRef.current = null;
+    }
+
+    // Hover intent delay prevents rapid retargeting while cursor moves between items.
+    hoverIntentTimeoutRef.current = window.setTimeout(() => {
+      hoverIntentTimeoutRef.current = null;
+      requestScrollToSection(sectionId, false);
+    }, 180);
+  };
+
+  const cancelHoverScroll = () => {
+    if (hoverIntentTimeoutRef.current) {
+      clearTimeout(hoverIntentTimeoutRef.current);
+      hoverIntentTimeoutRef.current = null;
     }
   };
 
@@ -47,6 +138,7 @@ const MoreNavigation = () => {
   };
 
   const handleMenuLeave = () => {
+    cancelHoverScroll();
     setIsOpen(false);
   };
 
@@ -165,8 +257,9 @@ const MoreNavigation = () => {
               <path
                 className="menu-segment"
                 d={segmentPath}
-                onClick={() => scrollToSection(item.id, true)}
-                onMouseEnter={() => scrollToSection(item.id)}
+                onClick={() => requestScrollToSection(item.id, true)}
+                onMouseEnter={() => scheduleHoverScroll(item.id)}
+                onMouseLeave={cancelHoverScroll}
               />
               
               {/* Item content */}
@@ -175,8 +268,9 @@ const MoreNavigation = () => {
                 y={position.y}
                 width={position.size}
                 height={position.size}
-                onClick={() => scrollToSection(item.id, true)}
-                onMouseEnter={() => scrollToSection(item.id)}
+                onClick={() => requestScrollToSection(item.id, true)}
+                onMouseEnter={() => scheduleHoverScroll(item.id)}
+                onMouseLeave={cancelHoverScroll}
               >
                 <div className="menu-item-content">
                   <span className="menu-item-icon">{item.icon}</span>
