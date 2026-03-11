@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import styles from './ProjectsStyles.module.css';
 import covfefe from '../../assets/Covfefe.png';
 import PortFolio from '../../assets/Favicon.png';
@@ -8,12 +8,10 @@ import ReelGood from '../../assets/ReelGoodIcon.png';
 import PacManRL from '../../assets/PacManRLIcon.png';
 import LinkBot from '../../assets/LinkBotIcon.png';
 import RocketCanvas from '../../assets/RocketCanvasIcon.png';
+import Transformer from '../../assets/transformer-icon.png'
+import Agent from '../../assets/agent-icon.png'
 
 function Projects() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAutoRotating, setIsAutoRotating] = useState(true);
-    const carouselRef = useRef(null);
-
     // Helper function to convert hex to RGB
     const hexToRgb = (hex) => {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -22,7 +20,7 @@ function Projects() {
             '255, 255, 255';
     };
 
-    const projects = [
+    const baseProjects = useMemo(() => ([
         { 
             name: "Covfefe", 
             description: "Zomato for Cafes", 
@@ -102,139 +100,131 @@ function Projects() {
             color: "#FFD700", 
             colorRgb: hexToRgb("#FFD700"),
             tech: "Python, Q-Learning, Function Approximation"
+        },
+        { 
+            name: "Base Transformer", 
+            description: "From-scratch implementation of a Transformer encoder-decoder stack.", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/base-transformer", 
+            icon: Transformer, 
+            color: "#4B0082", 
+            colorRgb: hexToRgb("#4B0082"),
+            tech: "Python, PyTorch, Attention, Positional Encoding"
+        },
+        { 
+            name: "Python Coding Agent", 
+            description: "Autonomous Python coding assistant with tool-use.", 
+            category: "Agent",
+            link: "https://github.com/SUPR1M3/python-coding-agent", 
+            icon: Agent, 
+            color: "#20B2AA", 
+            colorRgb: hexToRgb("#20B2AA"),
+            tech: "Python, LLMs, Agents, Orchestration"
+        },
+    ]), []);
+
+    // Build a repeated list so the wall feels dense and can loop.
+    const wallProjects = useMemo(() => {
+        const repeats = 3;
+        const items = [];
+        for (let copy = 0; copy < repeats; copy += 1) {
+            baseProjects.forEach((project, index) => {
+                items.push({
+                    ...project,
+                    _wallId: `${copy}-${project.name}-${index}`,
+                });
+            });
         }
-    ];
-
-    // Auto-rotation effect
-    useEffect(() => {
-        if (!isAutoRotating) return;
-        
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
-        }, 4000); // Slightly slower for projects
-
-        return () => clearInterval(interval);
-    }, [isAutoRotating, projects.length]);
-
-    const handlePrevious = () => {
-        setIsAutoRotating(false);
-        setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? projects.length - 1 : prevIndex - 1
-        );
-    };
-
-    const handleNext = () => {
-        setIsAutoRotating(false);
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
-    };
-
-    const handleCardClick = (index) => {
-        setIsAutoRotating(false);
-        setCurrentIndex(index);
-    };
-
-    const getCardPosition = (index) => {
-        const totalCards = projects.length;
-        const angleStep = (2 * Math.PI) / totalCards;
-        const currentAngle = angleStep * (index - currentIndex);
-        
-        const radius = 280;
-        const x = Math.sin(currentAngle) * radius;
-        const z = Math.cos(currentAngle) * radius;
-        
-        // Scale and opacity based on position
-        const scale = z > 0 ? 1 + (z / radius) * 0.3 : 0.7 + (z / radius) * 0.3;
-        const opacity = z > -radius * 0.5 ? 1 : 0.85;
-        const zIndex = Math.round(z);
-        
-        return { x, z, scale, opacity, zIndex };
-    };
+        return items;
+    }, [baseProjects]);
 
     return (
         <section className={styles.container}>
-            <h1 className='sectionTitle'>Projects</h1>
-            
-            <div className={styles.projectsWrapper}>
-                <div className={styles.carouselContainer} ref={carouselRef}>
-                    <div className={styles.carousel3d}>
-                        {projects.map((project, index) => {
-                            const position = getCardPosition(index);
-                            const isCenter = index === currentIndex;
-                            
-                            return (
+            <h1 className={styles.title}>Projects</h1>
+
+            <div className={styles.wallWrapper}>
+                <div className={styles.wallViewport}>
+                    <div className={styles.wallTrack}>
+                        {wallProjects.map((project) => (
+                            <article
+                                key={project._wallId}
+                                className={styles.projectCard}
+                                style={{
+                                    '--project-color': project.color,
+                                    '--project-color-rgb': project.colorRgb,
+                                }}
+                            >
                                 <div
-                                    key={project.name}
-                                    className={`${styles.projectCard} ${isCenter ? styles.projectCardCenter : ''}`}
-                                    style={{
-                                        transform: `translateX(${position.x}px) translateZ(${position.z}px) scale(${position.scale})`,
-                                        opacity: position.opacity,
-                                        '--project-color': project.color,
-                                        '--project-color-rgb': project.colorRgb
-                                    }}
-                                    onClick={() => handleCardClick(index)}
-                                >
-                                    <div className={styles.cardGlow} style={{ backgroundColor: project.color }}></div>
-                                    <div className={isCenter ? styles.cardFront : styles.cardFrontInactive}>
-                                        <div className={styles.cardImage}>
-                                            <img src={project.icon} alt={project.name} />
-                                        </div>
-                                        <h3 className={styles.cardTitle}>{project.name}</h3>
-                                        <p className={styles.cardCategory}>{project.category}</p>
-                                        <p className={styles.cardDescription}>{project.description}</p>
-                                        <div className={styles.techStack}>
-                                            <span className={styles.techLabel}>Tech:</span>
-                                            <span className={styles.techText}>{project.tech}</span>
-                                        </div>
-                                        {isCenter && (
-                                            <a 
-                                                href={project.link} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className={styles.projectLink}
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                View Project →
-                                            </a>
-                                        )}
+                                    className={styles.cardGlow}
+                                    style={{ backgroundColor: project.color }}
+                                />
+                                <div className={styles.cardFront}>
+                                    <div className={styles.cardImage}>
+                                        <img src={project.icon} alt={project.name} />
                                     </div>
+                                    <h3 className={styles.cardTitle}>{project.name}</h3>
+                                    <p className={styles.cardCategory}>{project.category}</p>
+                                    <p className={styles.cardDescription}>
+                                        {project.description}
+                                    </p>
+                                    <div className={styles.techStack}>
+                                        <span className={styles.techLabel}>Tech:</span>
+                                        <span className={styles.techText}>{project.tech}</span>
+                                    </div>
+                                    <a
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.projectLink}
+                                    >
+                                        View Project →
+                                    </a>
                                 </div>
-                            );
-                        })}
+                            </article>
+                        ))}
+                        {/* Duplicate for seamless looping */}
+                        {wallProjects.map((project, i) => (
+                            <article
+                                key={`${project._wallId}-dup-${i}`}
+                                className={styles.projectCard}
+                                style={{
+                                    '--project-color': project.color,
+                                    '--project-color-rgb': project.colorRgb,
+                                }}
+                            >
+                                <div
+                                    className={styles.cardGlow}
+                                    style={{ backgroundColor: project.color }}
+                                />
+                                <div className={styles.cardFront}>
+                                    <div className={styles.cardImage}>
+                                        <img src={project.icon} alt={project.name} />
+                                    </div>
+                                    <h3 className={styles.cardTitle}>{project.name}</h3>
+                                    <p className={styles.cardCategory}>{project.category}</p>
+                                    <p className={styles.cardDescription}>
+                                        {project.description}
+                                    </p>
+                                    <div className={styles.techStack}>
+                                        <span className={styles.techLabel}>Tech:</span>
+                                        <span className={styles.techText}>{project.tech}</span>
+                                    </div>
+                                    <a
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.projectLink}
+                                    >
+                                        View Project →
+                                    </a>
+                                </div>
+                            </article>
+                        ))}
                     </div>
-                </div>
-                
-                {/* Navigation Controls */}
-                <button 
-                    className={`${styles.navButton} ${styles.navLeft}`}
-                    onClick={handlePrevious}
-                    aria-label="Previous project"
-                >
-                    ❮
-                </button>
-                <button 
-                    className={`${styles.navButton} ${styles.navRight}`}
-                    onClick={handleNext}
-                    aria-label="Next project"
-                >
-                    ❯
-                </button>
-                
-                {/* Auto-rotation toggle */}
-                <button 
-                    className={styles.autoRotateToggle}
-                    onClick={() => setIsAutoRotating(!isAutoRotating)}
-                    aria-label={isAutoRotating ? "Pause auto-rotation" : "Start auto-rotation"}
-                >
-                    {isAutoRotating ? "⏸️" : "▶️"}
-                </button>
-                
-                {/* Project counter */}
-                <div className={styles.projectCounter}>
-                    {currentIndex + 1} / {projects.length}
                 </div>
             </div>
         </section>
-    )
+    );
 }
 
-export default Projects
+export default Projects;

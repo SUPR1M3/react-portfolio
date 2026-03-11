@@ -4,7 +4,7 @@
     flex-direction: column;
     text-align: center;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100vh;
     width: 100vw;
     padding: 1.5rem;
@@ -13,62 +13,82 @@
     overflow: hidden;
 }
 
-/* Projects Wrapper - Contains carousel */
-.projectsWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.title {
+    /* Push title below the fixed MoreNavigation bubble */
+    margin: 90px 0 14px;
+    line-height: 1;
+    text-align: center;
+}
+
+/* Wrapper for the infinite-scrolling wall */
+.wallWrapper {
+    margin-top: 0;
+    flex: 1;
     width: 100%;
-    max-width: 1200px;
-    height: 500px;
-    margin: 0 auto;
-    position: relative;
-}
-
-/* Carousel Container */
-.carouselContainer {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    height: 420px;
-    perspective: 1200px;
-    perspective-origin: center center;
+    max-width: 1300px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 0;
+    align-items: stretch;
 }
 
-/* 3D Carousel Space */
-.carousel3d {
-    position: relative;
+/* Viewport that clips the animated wall */
+.wallViewport {
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
-    z-index: 1;
+    overflow-y: hidden;
+    overflow-x: visible;
+    padding: 0 32px; /* extra side padding so glow isn’t clipped */
+    box-sizing: border-box;
+    position: relative;
+}
+
+.wallViewport::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px; /* small fade band */
+    pointer-events: none;
+    /* Fade from page background (dark/light) to transparent */
+    background: linear-gradient(
+        to bottom,
+        var(--background-color) 0%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    z-index: 3;
+}
+
+/* Track that actually moves; also the grid container */
+.wallTrack {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 1.75rem;
+    justify-items: center; /* keep cards away from container edges */
+    will-change: transform;
+    animation: wallScroll 40s linear infinite;
 }
 
 /* Individual Project Cards */
 .projectCard {
-    position: absolute;
-    width: 280px;
-    height: 340px;
-    left: 50%;
-    top: 50%;
-    margin-left: -140px;
-    margin-top: -170px;
-    transform-style: preserve-3d;
-    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    --card-offset: 0px;
+    width: 100%;
+    max-width: 340px; /* fixed card width so glow has breathing room */
+    min-height: 260px;
+    margin: 0;
+    position: relative;
+    border-radius: 24px;
     cursor: pointer;
     user-select: none;
     isolation: isolate;
+    transform: translate3d(0, var(--card-offset), 0);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* Card Front Face - Active Card (Glassmorphic) */
 .cardFront {
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
     padding: 1.5rem;
@@ -83,37 +103,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     text-align: center;
     transition: all 0.3s ease;
     backface-visibility: hidden;
     overflow: hidden;
     z-index: 2;
     transform-style: preserve-3d;
-}
-
-/* Card Front Face - Inactive Cards (Solid) */
-.cardFrontInactive {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 1.5rem;
-    box-sizing: border-box;
-    background: linear-gradient(135deg, 
-        rgba(var(--project-color-rgb), 0.8) 0%,
-        rgba(var(--project-color-rgb), 0.6) 100%);
-    border: 2px solid rgba(var(--project-color-rgb), 0.9);
-    border-radius: 24px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    transition: all 0.3s ease;
-    backface-visibility: hidden;
-    overflow: hidden;
-    z-index: 2;
 }
 
 /* Card Glow Effect */
@@ -125,8 +121,8 @@
     width: calc(100% + 8px);
     height: calc(100% + 8px);
     border-radius: 24px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 1;
     filter: blur(15px);
     pointer-events: none;
@@ -134,10 +130,10 @@
 
 /* Card Image */
 .cardImage {
-    width: 70px;
-    height: 70px;
-    min-width: 70px;
-    min-height: 70px;
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
     flex-shrink: 0;
     border-radius: 14px;
     overflow: hidden;
@@ -162,7 +158,7 @@
 
 /* Card Title */
 .cardTitle {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
     color: inherit;
@@ -171,7 +167,7 @@
 
 /* Card Category */
 .cardCategory {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     margin: 0 0 1rem 0;
     color: rgba(255, 255, 255, 0.8);
@@ -183,7 +179,7 @@
 /* Card Description */
 .cardDescription {
     font-size: 0.9rem;
-    margin: 0 0 0.8rem 0;
+    margin: 0.35rem 0 0.8rem 0;
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.3;
     flex-grow: 1;
@@ -199,7 +195,7 @@
 }
 
 .techLabel {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
@@ -210,7 +206,7 @@
 }
 
 .techText {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
     transition: color 1s ease-in;
@@ -226,7 +222,7 @@
     color: white;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
@@ -238,46 +234,9 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Center Card (Active) */
-.projectCardCenter {
-    z-index: 5 !important;
-}
-
-.projectCardCenter .cardGlow {
-    opacity: 0.8;
-    animation: pulse 2s infinite;
-}
-
-.projectCardCenter .cardFront {
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.35) 0%,
-        rgba(255, 255, 255, 0.25) 100%);
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    transform: scale(1.05);
-    box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(255, 255, 255, 0.1);
-}
-
-/* Ensure image container maintains size in center card */
-.projectCardCenter .cardImage {
-    width: 70px;
-    height: 70px;
-    flex-shrink: 0;
-    min-width: 70px;
-    min-height: 70px;
-}
-
-.projectCardCenter .cardImage img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-}
-
 /* Hover Effects */
 .projectCard:hover .cardGlow {
-    opacity: 0.6;
+    opacity: 0.9;
     filter: blur(20px);
     transform: translate(-50%, -50%) scale(1.02);
 }
@@ -289,176 +248,76 @@
         0 0 20px rgba(255, 255, 255, 0.1);
 }
 
+.projectCard:hover {
+    transform: translate3d(0, calc(var(--card-offset) - 4px), 0);
+}
+
 .projectCard:hover .cardImage {
     transform: scale(1.1);
 }
 
-/* Navigation Buttons */
-.navButton {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    color: var(--text-color);
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease, color 1s ease-in;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    user-select: none;
-}
-
-.navLeft {
-    left: calc(50% - 395px);
-}
-
-.navRight {
-    right: calc(50% - 395px);
-}
-
-.navButton:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-}
-
-.navButton:active {
-    transform: translateY(-50%) scale(0.95);
-}
-
-/* Auto-rotation Toggle */
-.autoRotateToggle {
-    position: absolute;
-    top: -10px;
-    right: calc(50% - 395px);
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    color: var(--text-color);
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease, color 1s ease-in;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.autoRotateToggle:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: scale(1.1);
-}
-
-/* Project Counter */
-.projectCounter {
-    position: absolute;
-    bottom: -48px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    padding: 8px 16px;
-    color: var(--text-color);
-    font-size: 1rem;
-    font-weight: 600;
-    z-index: 2000;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: color 1s ease-in, background 1s ease-in, border 1s ease-in, box-shadow 1s ease-in;
-}
-
-/* Light mode project counter */
-[data-theme='light'] .projectCounter {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Pulse Animation */
-@keyframes pulse {
-    0%, 100% {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.05);
-    }
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
-    .carouselContainer {
-        height: 350px;
-        width: 100%;
-        padding: 0 1rem;
+    .title {
+        margin-top: 78px;
+        margin-bottom: 12px;
     }
-    
-    .projectCard {
-        width: 240px;
-        height: 300px;
-        margin-left: -120px;
-        margin-top: -150px;
+
+    .wallTrack {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
-    
-    .cardFront,
-    .cardFrontInactive {
+
+    .cardFront {
         padding: 1.25rem;
     }
-    
+
     .cardTitle {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
-    
+
     .cardDescription {
         font-size: 0.8rem;
     }
-    
+
     .cardImage {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .navButton {
-        width: 50px;
-        height: 50px;
-        font-size: 1.25rem;
-    }
-    
-    .navLeft {
-        left: 10px;
-    }
-    
-    .navRight {
-        right: 10px;
-    }
-    
-    .autoRotateToggle {
-        right: 10px;
-        top: 10px;
+        width: 56px;
+        height: 56px;
     }
 }
 
-/* Enhanced styling for inactive cards */
-.cardFrontInactive .cardTitle,
-.cardFrontInactive .cardCategory,
-.cardFrontInactive .cardDescription,
-.cardFrontInactive .techLabel,
-.cardFrontInactive .techText {
+@media (min-width: 769px) and (max-width: 1199px) {
+    .wallTrack {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1200px) {
+    .title {
+        margin-top: 100px;
+        margin-bottom: 16px;
+    }
+
+    /* Stagger middle column cards for Pinterest-like offset */
+    .projectCard:nth-child(3n + 2) {
+        --card-offset: 120px;
+    }
+}
+
+.cardTitle,
+.cardCategory,
+.cardDescription,
+.techLabel,
+.techText {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes wallScroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-50%);
+    }
 }
