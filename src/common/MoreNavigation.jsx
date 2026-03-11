@@ -75,14 +75,12 @@ const MoreNavigation = () => {
     // If we’re mid smooth-scroll, queue the latest hover target.
     if (isScrollLockedRef.current) {
       queuedSectionIdRef.current = sectionId;
-      if (shouldCloseMenu) setIsOpen(false);
       return;
     }
 
     // Avoid re-triggering smooth scroll to the same place.
     if (Math.abs(container.scrollLeft - targetLeft) <= 2) {
       activeTargetSectionIdRef.current = sectionId;
-      if (shouldCloseMenu) setIsOpen(false);
       return;
     }
 
@@ -107,10 +105,6 @@ const MoreNavigation = () => {
         requestScrollToSection(queued, false);
       }
     }, 700);
-
-    if (shouldCloseMenu) {
-      setIsOpen(false);
-    }
   };
 
   const scheduleHoverScroll = (sectionId) => {
@@ -257,7 +251,7 @@ const MoreNavigation = () => {
               <path
                 className="menu-segment"
                 d={segmentPath}
-                onClick={() => requestScrollToSection(item.id, true)}
+                onClick={() => requestScrollToSection(item.id, false)}
                 onMouseEnter={() => scheduleHoverScroll(item.id)}
                 onMouseLeave={cancelHoverScroll}
               />
@@ -268,7 +262,7 @@ const MoreNavigation = () => {
                 y={position.y}
                 width={position.size}
                 height={position.size}
-                onClick={() => requestScrollToSection(item.id, true)}
+                onClick={() => requestScrollToSection(item.id, false)}
                 onMouseEnter={() => scheduleHoverScroll(item.id)}
                 onMouseLeave={cancelHoverScroll}
               >
