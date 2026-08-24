@@ -66,7 +66,7 @@ function App() {
         position: 'fixed', 
         top: '20px', 
         right: '20px', 
-        zIndex: 1000 
+        zIndex: 1100 
       }}>
         <LiquidContainerSwitch />
       </div>

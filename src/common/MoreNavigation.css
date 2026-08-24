@@ -1,25 +1,34 @@
 /* Professional SVG-Based Radial Menu */
 .more-navigation {
+  --nav-size: clamp(260px, 22vw, 340px);
   position: fixed;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   font-family: "Roboto", sans-serif;
-  font-size: 1rem;
-  width: 320px; /* Increased width to accommodate expanded buttons */
-  height: 300px; /* Increased height to accommodate expanded buttons */
-  overflow: hidden; /* Clip the top half of the sphere */
+  width: var(--nav-size);
+  /* Visible half of the square stage (ring hangs downward from the viewport top). */
+  height: calc(var(--nav-size) / 2);
+  overflow: visible;
+}
+
+.more-nav-stage {
+  position: relative;
+  width: var(--nav-size);
+  aspect-ratio: 1;
+  /* Pull the square up so the ring center sits on the viewport's top edge. */
+  margin-top: calc(var(--nav-size) / -2);
 }
 
 /* Trigger Button - Complete Sphere (Half Visible) */
 .more-trigger {
   position: absolute;
-  top: -50px; /* Hide top half of the sphere */
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 98px;
-  height: 98px; /* Full circle now */
+  transform: translate(-50%, -50%);
+  width: 41%;
+  height: 41%;
   background: 
     radial-gradient(circle at 35% 35%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.2) 30%, transparent 60%),
     radial-gradient(circle, var(--btn-color) 0%, var(--btn-color) 70%, rgba(0,0,0,0.4) 100%);
@@ -41,7 +50,6 @@
     inset 0 -15px 25px rgba(0,0,0,0.3);
   z-index: 1002;
   outline: none;
-  position: relative;
   overflow: hidden; /* Prevent light leak */
 }
 
@@ -51,10 +59,10 @@
 .more-trigger::after {
   content: '';
   position: absolute;
-  top: 25px; /* Moved more towards center */
-  left: 35px; /* Moved more towards center */
-  width: 25px;
-  height: 25px;
+  top: 26%;
+  left: 36%;
+  width: 26%;
+  height: 26%;
   background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, transparent 100%);
   border-radius: 50%;
   filter: blur(2px);
@@ -72,7 +80,7 @@
 
 .more-trigger:hover,
 .more-trigger.open {
-  transform: translateX(-50%) translateY(-2px) scale(1.05);
+  transform: translate(-50%, -50%) translateY(-2px) scale(1.05);
   box-shadow: 
     0 20px 50px rgba(0, 0, 0, 0.6),
     0 35px 80px rgba(0, 0, 0, 0.4),
@@ -120,14 +128,15 @@
 /* SVG Radial Menu */
 .radial-menu-svg {
   position: absolute;
-  top: -140px; /* Position so inner edge aligns with button outer edge: 40px - 120px = -80px */
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
   z-index: 1001;
   opacity: 0;
   scale: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: 50% 120px; /* Scale from the connection point */
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), scale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: 50% 50%;
   pointer-events: none;
 }
 
@@ -143,16 +152,31 @@
   stroke: rgba(255, 255, 255, 0.3);
   stroke-width: 1;
   opacity: 1;
+  pointer-events: none;
   transition: fill 1s ease-in, stroke 1s ease-in, filter 1s ease-in;
   filter: drop-shadow(0 -5px 20px rgba(0, 0, 0, 0.2)) blur(0.5px);
   backdrop-filter: blur(10px);
 }
 
+.menu-item-anchor {
+  pointer-events: auto;
+}
+
+.menu-item-group {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-item-group:hover {
+  transform: scale(1.12);
+}
+
 /* Menu Segments - Default Style */
 .menu-segment {
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: var(--center-x) var(--center-y);
+  transition: fill 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Default styling only for buttons without specific styles */
@@ -179,7 +203,6 @@
   stroke: rgba(255, 255, 255, 0.6) !important;
   stroke-width: 2 !important;
   opacity: 1 !important;
-  transform: scale(1.15) !important;
   filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 25px rgba(0, 0, 0, 0.4)) drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3)) blur(0.5px) !important;
   backdrop-filter: blur(20px) !important;
 }
@@ -194,8 +217,9 @@
 .more-navigation::before {
   content: "";
   position: absolute;
-  width: 116px;
-  height: 116px;
+  width: 48%;
+  aspect-ratio: 1;
+  height: auto;
   background: linear-gradient(
     0deg,
     hsl(226, 81%, 64%),
@@ -208,9 +232,9 @@
     hsl(181, 81%, 64%)
   );
   border-radius: 50%;
-  top: -60px; /* Center of 120px circle (60px) aligns with bottom of 50px button */
+  top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   z-index: -1;
   animation: rainbow-spin-circular 2.5s linear infinite;
   filter: blur(1px);
@@ -221,10 +245,10 @@
 
 @keyframes rainbow-spin-circular {
   0% {
-    transform: translateX(-50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    transform: translateX(-50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
@@ -232,92 +256,35 @@
 
 
 
-/* Menu Item Content */
-.menu-item-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  cursor: pointer;
-  pointer-events: none; /* Let clicks go through to segment */
-  color: #ffffff;
-  border-radius: 50%;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: 50% 50%; /* Content scales from its own center */
-}
-
-.menu-item-group:hover .menu-item-content {
-  color: #ffffff;
-  transform: scale(1.25);
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-}
-
-.menu-item-icon {
-  font-size: 14px;
-  margin-bottom: 2px;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.menu-item-group:hover .menu-item-icon {
-  transform: scale(1.3);
-  color: #ffffff;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+.menu-item-icon,
+.menu-item-label {
+  pointer-events: none;
+  fill: #ffffff;
+  paint-order: stroke fill;
 }
 
 .menu-item-label {
-  font-size: 7px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
-  line-height: 1;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  opacity: 0.9;
-  transition: all 0.4s ease;
+  opacity: 0.95;
 }
 
+.menu-item-group:hover .menu-item-icon,
 .menu-item-group:hover .menu-item-label {
-  opacity: 1;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
 }
 
-/* Responsive Design */
+/* Keep the ring proportional on smaller laptop windows; do not CSS-scale the SVG. */
 @media (max-width: 768px) {
-  .more-trigger {
-    width: 70px;
-    height: 35px;
+  .more-navigation {
+    --nav-size: clamp(240px, 42vw, 300px);
   }
-  
+
   .trigger-icon {
     font-size: 10px;
   }
   
   .trigger-text {
-    font-size: 6px;
-  }
-  
-  .radial-menu-svg {
-    transform: translateX(-50%) scale(0.8);
-  }
-  
-  .radial-menu-svg.open {
-    transform: translateX(-50%) scale(0.8);
-  }
-  
-  .menu-item-icon {
-    font-size: 12px;
-  }
-  
-  .menu-item-label {
     font-size: 6px;
   }
 }
@@ -337,7 +304,6 @@
 .more-trigger,
 .menu-background,
 .menu-segment,
-.menu-item-content,
 .menu-item-icon,
 .menu-item-label {
   transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, fill 0.3s ease, stroke 0.3s ease;
@@ -347,15 +313,15 @@
 @keyframes pulse {
   0% { 
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.2);
-    transform: translateX(-50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
   50% { 
     box-shadow: 0 2px 25px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.3);
-    transform: translateX(-50%) scale(1.02);
+    transform: translate(-50%, -50%) scale(1.02);
   }
   100% { 
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.2);
-    transform: translateX(-50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

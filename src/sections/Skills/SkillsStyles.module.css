@@ -3,11 +3,18 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
+    align-self: stretch;
+    flex: 1 1 auto;
     width: 100%;
+    min-height: 0;
+    height: auto;
+    max-height: 100%;
+    /* Keep the theme switch and page dots clear without shrinking the block into a clip box. */
+    margin-top: 4.75rem;
+    margin-bottom: 3.25rem;
+    padding: 0.5rem clamp(0.75rem, 2vw, 1.5rem) 0.75rem;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
@@ -15,24 +22,32 @@
 
 /* Skills Wrapper - Contains achievements, carousel and index */
 .skillsWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(200px, 280px) minmax(0, 1fr) minmax(200px, 280px);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+    justify-content: center;
     width: 100%;
     max-width: 1600px;
-    height: 500px;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
     margin: 0 auto;
     position: relative;
-    gap: 2rem;
+    gap: clamp(1rem, 2.2vw, 2.5rem);
+    box-sizing: border-box;
 }
 
 /* Achievements Section */
 .achievementsSection {
-    position: absolute;
-    left: -80px;
-    width: 320px;
-    height: 107%;
-    padding: 2rem;
+    position: relative;
+    left: auto;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    overflow-y: auto;
+    padding: clamp(1rem, 1.5vw, 2rem);
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -66,6 +81,7 @@
     flex-direction: column;
     gap: 2rem;
     flex: 1;
+    min-height: 0;
 }
 
 .achievementItem {
@@ -117,11 +133,14 @@
 
 /* Carousel Container */
 .carouselContainer {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 800px;
-    height: 500px;
+    position: relative;
+    left: auto;
+    transform: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
     perspective: 1200px;
     perspective-origin: center center;
     display: flex;
@@ -431,11 +450,11 @@
 }
 
 .navLeft {
-    left: calc(50% - 445px);
+    left: 4px;
 }
 
 .navRight {
-    right: calc(50% - 445px);
+    right: 4px;
 }
 
 .navButton:hover {
@@ -452,8 +471,8 @@
 /* Auto-rotation Toggle */
 .autoRotateToggle {
     position: absolute;
-    top: 20px;
-    right: calc(50% - 445px);
+    top: 12px;
+    right: 4px;
     width: 50px;
     height: 50px;
     background: rgba(255, 255, 255, 0.1);
@@ -479,7 +498,7 @@
 /* Skill Counter */
 .skillCounter {
     position: absolute;
-    bottom: -20px;
+    bottom: 8px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
@@ -504,19 +523,6 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .carouselContainer {
-        height: 400px;
-        max-width: 100%;
-        margin: 1rem auto;
-    }
-    
-    .skillCard {
-        width: 220px;
-        height: 280px;
-        margin-left: -110px;
-        margin-top: -140px;
-    }
-    
     .cardFront {
         padding: 1.5rem;
         border-radius: 16px;
@@ -555,17 +561,6 @@
 @media (max-width: 480px) {
     .container {
         padding: 1rem;
-    }
-    
-    .carouselContainer {
-        height: 350px;
-    }
-    
-    .skillCard {
-        width: 180px;
-        height: 240px;
-        margin-left: -90px;
-        margin-top: -120px;
     }
     
     .cardFront {
@@ -630,20 +625,22 @@
 
 /* Skills Index */
 .skillsIndex {
-    position: absolute;
-    right: -120px;
-    width: 320px;
-    height: 107%;
+    position: relative;
+    right: auto;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    padding: 2rem;
+    padding: clamp(1rem, 1.5vw, 2rem);
     box-sizing: border-box;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-    z-index: 1500;
+    z-index: 5;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
@@ -794,50 +791,39 @@
     text-align: right;
 }
 
-/* Responsive Design Updates */
-@media (max-width: 1200px) {
+/* Keep the three-column layout on typical laptop widths; shrink columns instead of stacking. */
+@media (max-width: 1280px) {
     .skillsWrapper {
-        flex-direction: column;
-        gap: 2rem;
+        grid-template-columns: minmax(168px, 220px) minmax(0, 1fr) minmax(168px, 220px);
+        gap: clamp(0.75rem, 1.6vw, 1.5rem);
     }
-    
-    .carouselContainer {
-        width: 100%;
-        max-width: 600px;
-    }
-    
+
+    .achievementsSection,
     .skillsIndex {
-        width: 100%;
-        max-width: 600px;
-        height: 300px;
+        padding: 1rem;
     }
-    
-    .indexList {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 0.8rem;
+
+    .navButton {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+
+    .autoRotateToggle {
+        width: 44px;
+        height: 44px;
     }
 }
 
 @media (max-width: 768px) {
     .skillsWrapper {
-        gap: 1.5rem;
+        gap: 0.75rem;
+        grid-template-columns: minmax(140px, 180px) minmax(0, 1fr) minmax(140px, 180px);
     }
     
-    .carouselContainer {
-        height: 400px;
-        max-width: 100%;
-        margin: 1rem auto;
-    }
-    
-    .skillsIndex {
-        height: 250px;
-        padding: 1rem;
-    }
-    
-    .indexList {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 0.6rem;
+    .cardFront {
+        padding: 1.5rem;
+        border-radius: 16px;
     }
     
     .indexItem {
@@ -861,20 +847,6 @@
 @media (max-width: 480px) {
     .container {
         padding: 1rem;
-    }
-    
-    .skillsWrapper {
-        gap: 1rem;
-    }
-    
-    .skillsIndex {
-        height: 200px;
-        padding: 0.8rem;
-    }
-    
-    .indexList {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
     }
     
     .indexItem {

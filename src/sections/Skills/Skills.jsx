@@ -4,6 +4,11 @@ import styles from './SkillsStyles.module.css';
 function Skills() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoRotating, setIsAutoRotating] = useState(true);
+    const [ringMetrics, setRingMetrics] = useState({
+        radius: 280,
+        cardWidth: 280,
+        cardHeight: 360,
+    });
     const carouselRef = useRef(null);
 
     // Helper function to convert hex to RGB
@@ -31,6 +36,44 @@ function Skills() {
   { name: "Postman", category: "Tools", proficiency: 85, icon: "📮", color: "#FF6C37", colorRgb: hexToRgb("#FF6C37") },
   { name: "C", category: "Backend", proficiency: 75, icon: "🔧", color: "#A8B9CC", colorRgb: hexToRgb("#A8B9CC") }
     ];
+
+    useEffect(() => {
+        const el = carouselRef.current;
+        if (!el) return;
+
+        const updateMetrics = () => {
+            const width = el.clientWidth;
+            const height = el.clientHeight;
+            if (width < 1 || height < 1) return;
+
+            const maxScale = 1.38;
+            const cardHeight = Math.min(360, Math.max(176, (height - 24) / maxScale));
+            const cardWidth = Math.min(
+                280,
+                Math.max(160, Math.min(width * 0.34, cardHeight * (280 / 360)))
+            );
+            const radius = Math.max(
+                90,
+                Math.min(width / 2 - cardWidth / 2 - 28, height * 0.45)
+            );
+
+            setRingMetrics((prev) => {
+                if (
+                    Math.abs(prev.radius - radius) < 1 &&
+                    Math.abs(prev.cardWidth - cardWidth) < 1 &&
+                    Math.abs(prev.cardHeight - cardHeight) < 1
+                ) {
+                    return prev;
+                }
+                return { radius, cardWidth, cardHeight };
+            });
+        };
+
+        updateMetrics();
+        const observer = new ResizeObserver(updateMetrics);
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     // Auto-rotation effect
     useEffect(() => {
@@ -65,7 +108,7 @@ function Skills() {
         const angleStep = (2 * Math.PI) / totalCards;
         const currentAngle = angleStep * (index - currentIndex);
         
-        const radius = 280;
+        const radius = ringMetrics.radius;
         const x = Math.sin(currentAngle) * radius;
         const z = Math.cos(currentAngle) * radius;
         
@@ -79,8 +122,6 @@ function Skills() {
 
     return (
         <section className={styles.container}>
-            <h1 className='sectionTitle'>Skills</h1>
-            
             <div className={styles.skillsWrapper}>
                 {/* Other Achievements Section */}
                 <div className={styles.achievementsSection}>
@@ -112,6 +153,10 @@ function Skills() {
                                     key={skill.name}
                                     className={`${styles.skillCard} ${isCenter ? styles.skillCardCenter : ''}`}
                                     style={{
+                                        width: `${ringMetrics.cardWidth}px`,
+                                        height: `${ringMetrics.cardHeight}px`,
+                                        marginLeft: `${-ringMetrics.cardWidth / 2}px`,
+                                        marginTop: `${-ringMetrics.cardHeight / 2}px`,
                                         transform: `translateX(${position.x}px) translateZ(${position.z}px) scale(${position.scale})`,
                                         opacity: position.opacity,
                                         '--skill-color': skill.color,
@@ -140,36 +185,30 @@ function Skills() {
                             );
                         })}
                     </div>
-                </div>
-                
-                {/* Navigation Controls - Outside carousel container for proper z-index layering */}
-                <button 
-                    className={`${styles.navButton} ${styles.navLeft}`}
-                    onClick={handlePrevious}
-                    aria-label="Previous skill"
-                >
-                    ❮
-                </button>
-                <button 
-                    className={`${styles.navButton} ${styles.navRight}`}
-                    onClick={handleNext}
-                    aria-label="Next skill"
-                >
-                    ❯
-                </button>
-                
-                {/* Auto-rotation toggle */}
-                <button 
-                    className={styles.autoRotateToggle}
-                    onClick={() => setIsAutoRotating(!isAutoRotating)}
-                    aria-label={isAutoRotating ? "Pause auto-rotation" : "Start auto-rotation"}
-                >
-                    {isAutoRotating ? "⏸️" : "▶️"}
-                </button>
-                
-                {/* Skill counter */}
-                <div className={styles.skillCounter}>
-                    {currentIndex + 1} / {skills.length}
+                    <button 
+                        className={`${styles.navButton} ${styles.navLeft}`}
+                        onClick={handlePrevious}
+                        aria-label="Previous skill"
+                    >
+                        ❮
+                    </button>
+                    <button 
+                        className={`${styles.navButton} ${styles.navRight}`}
+                        onClick={handleNext}
+                        aria-label="Next skill"
+                    >
+                        ❯
+                    </button>
+                    <button 
+                        className={styles.autoRotateToggle}
+                        onClick={() => setIsAutoRotating(!isAutoRotating)}
+                        aria-label={isAutoRotating ? "Pause auto-rotation" : "Start auto-rotation"}
+                    >
+                        {isAutoRotating ? "⏸️" : "▶️"}
+                    </button>
+                    <div className={styles.skillCounter}>
+                        {currentIndex + 1} / {skills.length}
+                    </div>
                 </div>
                 
                 {/* Skills Index */}
