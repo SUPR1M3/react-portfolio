@@ -20,21 +20,18 @@ function Skills() {
     };
 
     const skills = [
-          { name: "HTML", category: "Frontend", proficiency: 90, icon: "🌐", color: "#E34F26", colorRgb: hexToRgb("#E34F26") },
+        { name: "Python", category: "Backend", proficiency: 85, icon: "🐍", color: "#3776AB", colorRgb: hexToRgb("#3776AB") },
+  { name: "PyTorch", category: "AI/ML", proficiency: 85, icon: "🔥", color: "#EE4C2C", colorRgb: hexToRgb("#EE4C2C") },
+  { name: "JAX", category: "AI/ML", proficiency: 75, icon: "⚡", color: "#5F9CF5", colorRgb: hexToRgb("#5F9CF5") },
+  { name: "NumPy", category: "AI/ML", proficiency: 85, icon: "🔢", color: "#4D77CF", colorRgb: hexToRgb("#4D77CF") },
+  { name: "Hugging Face", category: "AI/ML", proficiency: 75, icon: "🤗", color: "#FFD21E", colorRgb: hexToRgb("#FFD21E") },
+  { name: "HTML", category: "Frontend", proficiency: 90, icon: "🌐", color: "#E34F26", colorRgb: hexToRgb("#E34F26") },
   { name: "CSS", category: "Frontend", proficiency: 85, icon: "🎨", color: "#1572B6", colorRgb: hexToRgb("#1572B6") },
-  { name: "JavaScript", category: "Frontend", proficiency: 95, icon: "⚡", color: "#F7DF1E", colorRgb: hexToRgb("#F7DF1E") },
-  { name: "React", category: "Frontend", proficiency: 90, icon: "⚛️", color: "#61DAFB", colorRgb: hexToRgb("#61DAFB") },
-  { name: "Tailwind", category: "Frontend", proficiency: 80, icon: "💨", color: "#06B6D4", colorRgb: hexToRgb("#06B6D4") },
+  { name: "JavaScript", category: "Frontend", proficiency: 95, icon: "📜", color: "#F7DF1E", colorRgb: hexToRgb("#F7DF1E") },
   { name: "Node.js", category: "Backend", proficiency: 75, icon: "🟢", color: "#339933", colorRgb: hexToRgb("#339933") },
-  { name: "Python", category: "Backend", proficiency: 85, icon: "🐍", color: "#3776AB", colorRgb: hexToRgb("#3776AB") },
-  { name: "Express", category: "Backend", proficiency: 70, icon: "🚀", color: "#68D391", colorRgb: hexToRgb("#68D391") },
+  { name: "React", category: "Frontend", proficiency: 90, icon: "⚛️", color: "#61DAFB", colorRgb: hexToRgb("#61DAFB") },
   { name: "C++", category: "Backend", proficiency: 65, icon: "⚙️", color: "#00599C", colorRgb: hexToRgb("#00599C") },
-  { name: "Java", category: "Backend", proficiency: 75, icon: "☕", color: "#ED8B00", colorRgb: hexToRgb("#ED8B00") },
-  { name: "MySQL", category: "Database", proficiency: 80, icon: "🗄️", color: "#4479A1", colorRgb: hexToRgb("#4479A1") },
-  { name: "MongoDB", category: "Database", proficiency: 70, icon: "🍃", color: "#47A248", colorRgb: hexToRgb("#47A248") },
   { name: "Docker", category: "Tools", proficiency: 65, icon: "🐳", color: "#2496ED", colorRgb: hexToRgb("#2496ED") },
-  { name: "Postman", category: "Tools", proficiency: 85, icon: "📮", color: "#FF6C37", colorRgb: hexToRgb("#FF6C37") },
-  { name: "C", category: "Backend", proficiency: 75, icon: "🔧", color: "#A8B9CC", colorRgb: hexToRgb("#A8B9CC") }
     ];
 
     useEffect(() => {
