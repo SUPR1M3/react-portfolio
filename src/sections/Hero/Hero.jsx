@@ -32,7 +32,11 @@ function Hero() {
                 <h1>Suraj<br/>Singh</h1>
                 <h2>FullStack Developer</h2>
                 <span>
-                    <a href="https://twitter.com/" target="_blank">
+                    <a /*href="https://twitter.com/" target="_blank"*/ style={{
+                        pointerEvents: "none",
+                        cursor: "default",
+                        opacity: 0.5
+                    }}>
                         <img src={TwitterLight} style={{opacity:theme==='light'?1:0}} alt ="Twitter icon light"/>
                         <img src={TwitterDark} style={{opacity:theme==='light'?0:1}} alt ="Twitter icon dark"/>
                     </a>
