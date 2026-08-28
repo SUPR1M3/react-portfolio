@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './HeroStyles.module.css';
-import heroImg from '../../assets/hero-img.png';
+import heroImg from '../../assets/hero-img.webp';
 import LinkedinLight from '../../assets/linkedin-light.svg';
 import LinkedinDark from '../../assets/linkedin-dark.svg';
 import TwitterLight from '../../assets/twitter-light.svg';
