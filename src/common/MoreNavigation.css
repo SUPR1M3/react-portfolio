@@ -217,9 +217,12 @@
 .more-navigation::before {
   content: "";
   position: absolute;
-  width: 48%;
-  aspect-ratio: 1;
-  height: auto;
+  /* Sized directly off the same --nav-size custom property that drives
+     .more-trigger (41%) and the SVG stage, instead of `%` + aspect-ratio,
+     so the disc scales in exact lockstep with them on every resize instead
+     of drifting off-center from the sphere. */
+  width: calc(var(--nav-size) * 0.48);
+  height: calc(var(--nav-size) * 0.48);
   background: linear-gradient(
     0deg,
     hsl(226, 81%, 64%),
