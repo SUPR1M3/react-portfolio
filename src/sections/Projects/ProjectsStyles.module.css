@@ -59,6 +59,12 @@
         rgba(0, 0, 0, 0.1) 40%,
         rgba(0, 0, 0, 0) 100%
     );
+    /* Fade the band's own left/right edges out gradually, instead of
+       ending in a hard vertical line at the wallViewport boundary. The
+       transition zones are wide (30% on each side) so there is no
+       perceptible seam anywhere along the fade. */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
     /* Above cards, still below global cursor (which lives in its own stacking context) */
     z-index: 1;
 }
