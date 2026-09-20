@@ -522,91 +522,8 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .cardFront {
-        padding: 1.5rem;
-        border-radius: 16px;
-    }
-    
-    .cardIcon {
-        font-size: 3rem;
-        margin-bottom: 0.8rem;
-    }
-    
-    .cardTitle {
-        font-size: 1.4rem;
-        margin-bottom: 0.3rem;
-    }
-    
-    .cardCategory {
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .navButton {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-    }
-    
-    .navLeft {
-        left: 10px;
-    }
-    
-    .navRight {
-        right: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    .cardFront {
-        padding: 1rem;
-        border-radius: 12px;
-    }
-    
-    .cardIcon {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .cardTitle {
-        font-size: 1.2rem;
-        margin-bottom: 0.2rem;
-    }
-    
-    .cardCategory {
-        font-size: 0.8rem;
-        margin-bottom: 1rem;
-    }
-    
-    .proficiencyText {
-        font-size: 1rem;
-    }
-    
-    .navButton {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
-    .autoRotateToggle {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        top: 10px;
-        right: 10px;
-    }
-    
-    .skillCounter {
-        bottom: 10px;
-        font-size: 0.9rem;
-        padding: 6px 12px;
-    }
-}
+/* No <=768px rules here: below that width App.jsx renders MobileLanding
+   instead of Skills, so a phone-targeted block would never run. */
 
 /* Dark/Light theme adjustments */
 @media (prefers-color-scheme: dark) {
@@ -815,50 +732,8 @@
     }
 }
 
-@media (max-width: 768px) {
-    .skillsWrapper {
-        gap: 0.75rem;
-        grid-template-columns: minmax(140px, 180px) minmax(0, 1fr) minmax(140px, 180px);
-    }
-    
-    .cardFront {
-        padding: 1.5rem;
-        border-radius: 16px;
-    }
-    
-    .indexItem {
-        padding: 0.6rem;
-        gap: 0.8rem;
-    }
-    
-    .indexIcon {
-        font-size: 1.2rem;
-    }
-    
-    .indexName {
-        font-size: 0.8rem;
-    }
-    
-    .indexCategory {
-        font-size: 0.7rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    .indexItem {
-        padding: 0.5rem;
-        gap: 0.6rem;
-    }
-    
-    .indexTitle {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-    }
-}
+/* No <=768px rules here (see the matching note above): below that width
+   App.jsx renders MobileLanding instead of Skills. */
 
 /* Performance optimizations */
 .skillCard * {

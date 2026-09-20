@@ -277,20 +277,8 @@
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
 }
 
-/* Keep the ring proportional on smaller laptop windows; do not CSS-scale the SVG. */
-@media (max-width: 768px) {
-  .more-navigation {
-    --nav-size: clamp(240px, 42vw, 300px);
-  }
-
-  .trigger-icon {
-    font-size: 10px;
-  }
-  
-  .trigger-text {
-    font-size: 6px;
-  }
-}
+/* No <=768px rules here: below that width App.jsx renders MobileLanding
+   instead of MoreNavigation, so a phone-targeted block would never run. */
 
 /* Accessibility */
 .more-trigger:focus {

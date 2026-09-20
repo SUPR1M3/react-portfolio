@@ -267,35 +267,8 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .title {
-        margin-top: 78px;
-        margin-bottom: 12px;
-    }
-
-    .wallTrack {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .cardFront {
-        padding: 1.25rem;
-    }
-
-    .cardTitle {
-        font-size: 1.1rem;
-    }
-
-    .cardDescription {
-        font-size: 0.8rem;
-    }
-
-    .cardImage {
-        width: 56px;
-        height: 56px;
-    }
-}
-
+/* No <=768px rules here: below that width App.jsx renders MobileLanding
+   instead of Projects, so a phone-targeted block would never run. */
 @media (min-width: 769px) and (max-width: 1199px) {
     .wallTrack {
         grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -73,19 +73,6 @@
     transform: scale(1.1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .resume-preview-card {
-        width: 85vw;
-        left: 15vw;
-        right: 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .resume-preview-card {
-        width: 100vw;
-        left: 0;
-        right: 0;
-    }
-}
+/* No <=768px rules here: below that width App.jsx renders MobileLanding
+   (which downloads the resume directly instead of using this iframe
+   preview), so a phone-targeted block would never run. */
