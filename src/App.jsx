@@ -10,8 +10,11 @@ import LiquidContainerSwitch from './sections/Hero/LiquidContainerSwitch';
 import MoreNavigation from './common/MoreNavigation.jsx';
 import { ResumePreviewProvider } from './common/ResumePreviewContext.jsx';
 import ResumePreview from './common/ResumePreview.jsx';
+import MobileLanding from './sections/MobileLanding/MobileLanding.jsx';
+import { useIsMobile } from './common/useIsMobile.js';
 
 function App() {
+  const isMobile = useIsMobile();
   const [activeSection, setActiveSection] = useState(0);
   const sections = ['hero', 'skills', 'projects', 'contact'];
 
@@ -47,6 +50,10 @@ function App() {
       };
     }
   }, [activeSection, sections.length]);
+
+  if (isMobile) {
+    return <MobileLanding />;
+  }
 
   return (
     <ResumePreviewProvider>
