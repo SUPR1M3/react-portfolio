@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './SkillsStyles.module.css';
 
-function Skills() {
+function Skills({ isActive = true }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoRotating, setIsAutoRotating] = useState(true);
     const [ringMetrics, setRingMetrics] = useState({
@@ -72,16 +72,19 @@ function Skills() {
         return () => observer.disconnect();
     }, []);
 
-    // Auto-rotation effect
+    // Auto-rotation effect - paused while this section isn't the one the
+    // user is looking at, since Skills is always mounted (App.jsx renders
+    // all sections side-by-side) and this interval would otherwise keep
+    // re-rendering all 12 cards' 3D transforms in the background forever.
     useEffect(() => {
-        if (!isAutoRotating) return;
-        
+        if (!isAutoRotating || !isActive) return;
+
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % skills.length);
         }, 3000);
 
         return () => clearInterval(interval);
-    }, [isAutoRotating, skills.length]);
+    }, [isAutoRotating, isActive, skills.length]);
 
     const handlePrevious = () => {
         setIsAutoRotating(false);
@@ -244,4 +247,7 @@ function Skills() {
     )
 }
 
-export default Skills
+// Memoized - see Hero.jsx for why (blocks unnecessary re-renders from
+// App.jsx's activeSection changes; Skills still re-renders on its own
+// state, e.g. the auto-rotate interval).
+export default React.memo(Skills)

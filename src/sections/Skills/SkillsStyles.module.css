@@ -205,14 +205,19 @@
 }
 
 /* Card Front Face - Background Cards (Solid) */
+/* No backdrop-filter here on purpose: this class applies to all 11
+   non-centered cards at once (vs. just the 1 active .cardFront above),
+   and backdrop-filter is one of the most expensive things a browser can
+   composite - 11 of them simultaneously was a major cost every time this
+   carousel re-renders. The background is already 60-80% opaque with the
+   skill's own color, so the blur-behind was barely visible anyway. */
 .cardFrontInactive {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, 
+    background: linear-gradient(135deg,
         rgba(var(--skill-color-rgb), 0.8) 0%,
         rgba(var(--skill-color-rgb), 0.6) 100%);
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 2rem;
