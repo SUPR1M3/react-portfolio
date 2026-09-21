@@ -93,4 +93,5 @@ const LiquidCursor = () => {
   );
 };
 
-export default LiquidCursor; 
+// Memoized - see Hero.jsx for why.
+export default React.memo(LiquidCursor);

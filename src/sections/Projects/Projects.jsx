@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react';
 import styles from './ProjectsStyles.module.css';
-import covfefe from '../../assets/Covfefe.png';
+import covfefe from '../../assets/Covfefe.webp';
 import PortFolio from '../../assets/Favicon.png';
-import BookLetter from '../../assets/BookLetterIcon.png';
-import SpaceInvaders from '../../assets/SpaceShip.png';
-import ReelGood from '../../assets/ReelGoodIcon.png';
+import BookLetter from '../../assets/BookLetterIcon.webp';
+import SpaceInvaders from '../../assets/SpaceShip.webp';
+import ReelGood from '../../assets/ReelGoodIcon.webp';
 import PacManRL from '../../assets/PacManRLIcon.png';
 import LinkBot from '../../assets/LinkBotIcon.png';
 import RocketCanvas from '../../assets/RocketCanvasIcon.png';
 import Transformer from '../../assets/transformer-icon.png'
 import Agent from '../../assets/agent-icon.png'
 
-function Projects() {
+function Projects({ isActive = true }) {
     // Helper function to convert hex to RGB
     const hexToRgb = (hex) => {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -144,7 +144,14 @@ function Projects() {
 
             <div className={styles.wallWrapper}>
                 <div className={styles.wallViewport}>
-                    <div className={styles.wallTrack}>
+                    {/* Paused while this section isn't visible - Projects is
+                        always mounted (App.jsx renders all sections
+                        side-by-side), so this animation would otherwise keep
+                        compositing 60 backdrop-filtered cards forever. */}
+                    <div
+                        className={styles.wallTrack}
+                        style={{ animationPlayState: isActive ? 'running' : 'paused' }}
+                    >
                         {wallProjects.map((project) => (
                             <article
                                 key={project._wallId}
@@ -227,4 +234,5 @@ function Projects() {
     );
 }
 
-export default Projects;
+// Memoized - see Hero.jsx for why.
+export default React.memo(Projects);

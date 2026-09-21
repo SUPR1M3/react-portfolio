@@ -4,7 +4,7 @@ import sun from '../../assets/sun.svg';
 import moon from '../../assets/moon.svg';
 import './WaterSwitch.css';
 
-export default function LiquidContainerSwitch() {
+function LiquidContainerSwitch() {
     const { theme, toggleTheme } = useTheme();
     
     return (
@@ -24,4 +24,7 @@ export default function LiquidContainerSwitch() {
             </div>
         </div>
     );
-} 
+}
+
+// Memoized - see Hero.jsx for why.
+export default React.memo(LiquidContainerSwitch);

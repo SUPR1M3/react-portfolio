@@ -105,10 +105,10 @@ function App() {
           <Hero/>
         </section>
         <section id="skills" className="horizontal-section">
-          <Skills/>
+          <Skills isActive={activeSection === 1} />
         </section>
         <section id="projects" className="horizontal-section">
-          <Projects/>
+          <Projects isActive={activeSection === 2} />
         </section>
         <section id="contact" className="horizontal-section">
           <Contact/>

@@ -10,4 +10,5 @@ function Footer() {
   )
 }
 
-export default Footer
+// Memoized - see Hero.jsx for why.
+export default React.memo(Footer)

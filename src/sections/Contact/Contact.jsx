@@ -41,4 +41,5 @@ function Contact() {
     )
 }
 
-export default Contact
+// Memoized - see Hero.jsx for why.
+export default React.memo(Contact)

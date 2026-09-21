@@ -77,4 +77,10 @@ function Hero() {
     )
 }
 
-export default Hero
+// Memoized: App.jsx's `activeSection` state changes on every scroll
+// transition, and without memo that re-renders every sibling section
+// (Hero, Skills, Projects, Contact, ...) even though none of them take
+// props derived from it - Skills in particular is expensive to re-render
+// (12 backdrop-filtered, 3D-transformed cards), so that cascade was
+// landing extra paint work in the middle of the scroll-snap animation.
+export default React.memo(Hero)

@@ -3,7 +3,7 @@ import { useResumePreview } from './ResumePreviewContext';
 import CV from '../assets/Suraj_Singh_Resume_Final.pdf';
 import './ResumePreview.css';
 
-export default function ResumePreview() {
+function ResumePreview() {
     const { 
         showResumePreview, 
         isClosing,
@@ -24,7 +24,7 @@ export default function ResumePreview() {
             >
                 ×
             </button>
-            <iframe 
+            <iframe
                 src={CV}
                 title="Resume Preview"
                 className="resume-iframe"
@@ -32,3 +32,6 @@ export default function ResumePreview() {
         </div>
     );
 }
+
+// Memoized - see Hero.jsx for why.
+export default React.memo(ResumePreview);

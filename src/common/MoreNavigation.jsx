@@ -272,4 +272,5 @@ const MoreNavigation = () => {
   );
 };
 
-export default MoreNavigation;
+// Memoized - see Hero.jsx for why.
+export default React.memo(MoreNavigation);
