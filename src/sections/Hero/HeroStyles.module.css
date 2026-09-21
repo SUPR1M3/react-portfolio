@@ -213,7 +213,11 @@
     }
 }
 
-@media (width>=800px){
+/* Starts at 769px (not 800px): App.jsx renders MobileLanding for
+   anything <=768px, so this is the first width the desktop Hero can
+   ever actually render at - the mobile-style stacked/background-image
+   layout above should never be shown once the desktop tree is active. */
+@media (width>=769px){
     .container{
         flex-direction: row-reverse;
         align-items:center;
