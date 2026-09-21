@@ -41,12 +41,31 @@ function App() {
       }
     };
 
+    // Each section is exactly one window.innerWidth wide, so resizing the
+    // window (e.g. dragging a desktop window narrower/wider) leaves
+    // scrollLeft pointing at the *old* width's offset - visually landing
+    // mid-section instead of on the active one. Re-snap once the resize
+    // settles rather than on every resize tick (that would fight the
+    // browser's own reflow and feel janky).
+    let resizeSnapTimeout = null;
+    const handleResize = () => {
+      if (resizeSnapTimeout) window.clearTimeout(resizeSnapTimeout);
+      resizeSnapTimeout = window.setTimeout(() => {
+        if (container) {
+          container.scrollTo({ left: activeSection * window.innerWidth, behavior: 'auto' });
+        }
+      }, 150);
+    };
+
     if (container) {
       container.addEventListener('scroll', handleScroll);
       document.addEventListener('keydown', handleKeyPress);
+      window.addEventListener('resize', handleResize);
       return () => {
         container.removeEventListener('scroll', handleScroll);
         document.removeEventListener('keydown', handleKeyPress);
+        window.removeEventListener('resize', handleResize);
+        if (resizeSnapTimeout) window.clearTimeout(resizeSnapTimeout);
       };
     }
   }, [activeSection, sections.length]);
