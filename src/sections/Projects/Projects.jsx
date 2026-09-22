@@ -123,9 +123,35 @@ function Projects({ isActive = true }) {
         },
     ]), []);
 
-    // Build a repeated list so the wall feels dense and can loop.
+    // Build a repeated list so the wall feels dense and can loop. The grid
+    // is `WALL_COLUMNS` columns wide, and the seamless-loop technique below
+    // renders this list twice and animates translateY(-50%) - that only
+    // lines up cleanly if this list's length is a multiple of WALL_COLUMNS
+    // (otherwise the two halves have a ragged last row and the loop visibly
+    // jumps). 2 full repeats of the base projects is rarely a clean
+    // multiple on its own (10 projects -> 20, not divisible by 3), so
+    // instead of a full 3rd repeat of everything, `shortfall` below tops
+    // the list up to the next clean multiple with just a few single extra
+    // copies - e.g. today (10 projects) that's 1 extra copy for 21 total,
+    // a 30% smaller DOM than the old always-3x approach (42 nodes vs. 60).
+    //
+    // This means adding (or removing) projects in `baseProjects` above -
+    // the plan was to allow up to 3 more - needs no changes here at all;
+    // the padding recalculates itself (with up to 3 more projects, the
+    // shortfall is always 0, 1, or 2 extra copies - never more). The only
+    // thing that must still be kept in sync by hand is `WALL_COLUMNS`
+    // below, which has to match `.wallTrack`'s `grid-template-columns`
+    // column count in ProjectsStyles.module.css (currently
+    // `repeat(3, minmax(0, 1fr))`) - if that ever changes, update
+    // WALL_COLUMNS to match.
+    //
+    // EXTRA_APPEARANCE_ORDER picks which project(s) get an extra copy when
+    // padding is needed, in order (cycling back to the start if more than
+    // one round is needed) - purely a density/taste choice, edit freely.
+    const WALL_COLUMNS = 3;
+    const EXTRA_APPEARANCE_ORDER = ['Base Transformer'];
     const wallProjects = useMemo(() => {
-        const repeats = 3;
+        const repeats = 2;
         const items = [];
         for (let copy = 0; copy < repeats; copy += 1) {
             baseProjects.forEach((project, index) => {
@@ -134,6 +160,12 @@ function Projects({ isActive = true }) {
                     _wallId: `${copy}-${project.name}-${index}`,
                 });
             });
+        }
+        const shortfall = (WALL_COLUMNS - (items.length % WALL_COLUMNS)) % WALL_COLUMNS;
+        for (let i = 0; i < shortfall; i += 1) {
+            const preferredName = EXTRA_APPEARANCE_ORDER[i % EXTRA_APPEARANCE_ORDER.length];
+            const project = baseProjects.find((p) => p.name === preferredName) || baseProjects[i % baseProjects.length];
+            items.push({ ...project, _wallId: `extra-${i}-${project.name}` });
         }
         return items;
     }, [baseProjects]);
