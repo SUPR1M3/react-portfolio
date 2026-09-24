@@ -17,14 +17,26 @@ const LiquidCursor = () => {
 
   useEffect(() => {
     let animationFrameId;
-    
-    const handleMouseMove = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-    };
+    // Tracks whether a frame is currently scheduled, so a burst of
+    // mousemove events (which fire far more often than one per frame)
+    // doesn't queue up extra requestAnimationFrame calls.
+    let isRunning = false;
+    // Below this, a ball is considered to have caught up - not worth
+    // another frame of work to nudge it a fraction of a pixel closer.
+    const IDLE_THRESHOLD_PX = 0.5;
 
     const lerp = (start, end, factor) => {
       return start + (end - start) * factor;
     };
+
+    const isSettled = () => (
+      Math.abs(mousePos.current.x - ball1Pos.current.x) < IDLE_THRESHOLD_PX &&
+      Math.abs(mousePos.current.y - ball1Pos.current.y) < IDLE_THRESHOLD_PX &&
+      Math.abs(ball1Pos.current.x - ball2Pos.current.x) < IDLE_THRESHOLD_PX &&
+      Math.abs(ball1Pos.current.y - ball2Pos.current.y) < IDLE_THRESHOLD_PX &&
+      Math.abs(ball2Pos.current.x - ball3Pos.current.x) < IDLE_THRESHOLD_PX &&
+      Math.abs(ball2Pos.current.y - ball3Pos.current.y) < IDLE_THRESHOLD_PX
+    );
 
     const animate = () => {
       // Cursor dot follows mouse exactly (centered)
@@ -36,11 +48,11 @@ const LiquidCursor = () => {
       // Ball 1: Stays with cursor with miniscule delay for flow simulation (95%)
       ball1Pos.current.x = lerp(ball1Pos.current.x, mousePos.current.x, 0.95);
       ball1Pos.current.y = lerp(ball1Pos.current.y, mousePos.current.y, 0.95);
-      
+
       // Ball 2: Trails Ball 1 with heavy delay (15%) - makes it lag behind more
       ball2Pos.current.x = lerp(ball2Pos.current.x, ball1Pos.current.x, 0.15);
       ball2Pos.current.y = lerp(ball2Pos.current.y, ball1Pos.current.y, 0.15);
-      
+
       // Ball 3: Follows Ball 2 with moderate delay (30%) - stays closer to Ball 2
       ball3Pos.current.x = lerp(ball3Pos.current.x, ball2Pos.current.x, 0.30);
       ball3Pos.current.y = lerp(ball3Pos.current.y, ball2Pos.current.y, 0.30);
@@ -59,17 +71,29 @@ const LiquidCursor = () => {
         ball3Ref.current.style.top = `${ball3Pos.current.y}px`;
       }
 
+      // Stop scheduling frames once everything has caught up to the mouse -
+      // handleMouseMove restarts the loop the moment the mouse moves again.
+      if (isSettled()) {
+        isRunning = false;
+        return;
+      }
+
       animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const handleMouseMove = (e) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      if (!isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
 
     // Hide default cursor
     document.body.style.cursor = 'none';
-    
+
     // Add event listeners
     document.addEventListener('mousemove', handleMouseMove);
-    
-    // Start animation
-    animate();
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
