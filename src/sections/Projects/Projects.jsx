@@ -23,6 +23,66 @@ function Projects({ isActive = true }) {
 
     const baseProjects = useMemo(() => ([
         { 
+            name: "Base Transformer", 
+            description: "Implementation of a Transformer encoder-decoder stack.", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/Transformer_one", 
+            icon: Transformer, 
+            color: "#4B0082", 
+            colorRgb: hexToRgb("#4B0082"),
+            tech: "Python, PyTorch"
+        },
+        { 
+            name: "10M Transformer", 
+            description: "Scaling transformers up to 10M params to learn multi-digit addition.", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/10M-Transformer", 
+            icon: TenMTransformer, 
+            color: "#E91E63", 
+            colorRgb: hexToRgb("#E91E63"),
+            tech: "Python, Jax, Flax, Optax"
+        },
+        { 
+            name: "Python Coding Agent", 
+            description: "Autonomous Python coding assistant with tool-use.", 
+            category: "Agent",
+            link: "https://github.com/SUPR1M3/Agent-0", 
+            icon: Agent, 
+            color: "#20B2AA", 
+            colorRgb: hexToRgb("#20B2AA"),
+            tech: "Python, LLMs, Agents"
+        },
+        { 
+            name: "RocketCanvas", 
+            description: "Real-time Collaborative Canvas Design Editor", 
+            category: "Web App",
+            link: "https://github.com/SUPR1M3/RocketiumTest", 
+            icon: RocketCanvas, 
+            color: "#FF6B35", 
+            colorRgb: hexToRgb("#FF6B35"),
+            tech: "React, Redux, Fabric.js, Socket.io, MongoDB"
+        },
+        { 
+            name: "PacManRL", 
+            description: "Reinforcement Learning Pac-Man Agent", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/Pacman_RL_with_feedback-master", 
+            icon: PacManRL, 
+            color: "#FFD700", 
+            colorRgb: hexToRgb("#FFD700"),
+            tech: "Python, Q-Learning"
+        },
+        { 
+            name: "LinkBot", 
+            description: "LinkedIn Outreach Automation Bot", 
+            category: "Automation Tool",
+            link: "https://github.com/SUPR1M3/OutReach-Bot", 
+            icon: LinkBot, 
+            color: "#0077B5", 
+            colorRgb: hexToRgb("#0077B5"),
+            tech: "Python, Selenium, SQL"
+        },
+        { 
             name: "Covfefe", 
             description: "Zomato for Cafes", 
             category: "Web App",
@@ -50,7 +110,7 @@ function Projects({ isActive = true }) {
             icon: SpaceInvaders, 
             color: "#4169E1", 
             colorRgb: hexToRgb("#4169E1"),
-            tech: "JavaScript, HTML5 Canvas"
+            tech: "JavaScript, HTML5"
         },
         { 
             name: "Reel Good", 
@@ -60,7 +120,7 @@ function Projects({ isActive = true }) {
             icon: ReelGood, 
             color: "#DC143C", 
             colorRgb: hexToRgb("#DC143C"),
-            tech: "React, API Integration"
+            tech: "React, JavaScript, HTML"
         },
         { 
             name: "Portfolio", 
@@ -70,67 +130,7 @@ function Projects({ isActive = true }) {
             icon: PortFolio, 
             color: "#9932CC", 
             colorRgb: hexToRgb("#9932CC"),
-            tech: "React, CSS Modules, Vite"
-        },
-        { 
-            name: "LinkBot", 
-            description: "LinkedIn Outreach Automation Bot", 
-            category: "Automation Tool",
-            link: "https://github.com/SUPR1M3/OutReach-Bot", 
-            icon: LinkBot, 
-            color: "#0077B5", 
-            colorRgb: hexToRgb("#0077B5"),
-            tech: "Python, Selenium, Automation"
-        },
-        { 
-            name: "RocketCanvas", 
-            description: "Real-time Collaborative Canvas Design Editor", 
-            category: "Web App",
-            link: "https://github.com/SUPR1M3/RocketiumTest", 
-            icon: RocketCanvas, 
-            color: "#FF6B35", 
-            colorRgb: hexToRgb("#FF6B35"),
-            tech: "React, Redux, Fabric.js, Socket.io, MongoDB"
-        },
-        { 
-            name: "PacManRL", 
-            description: "Reinforcement Learning Pac-Man Agent", 
-            category: "AI/ML",
-            link: "https://github.com/SUPR1M3/Pacman_RL_with_feedback-master", 
-            icon: PacManRL, 
-            color: "#FFD700", 
-            colorRgb: hexToRgb("#FFD700"),
-            tech: "Python, Q-Learning, Function Approximation"
-        },
-        { 
-            name: "Base Transformer", 
-            description: "From-scratch implementation of a Transformer encoder-decoder stack.", 
-            category: "AI/ML",
-            link: "https://github.com/SUPR1M3/Transformer_one", 
-            icon: Transformer, 
-            color: "#4B0082", 
-            colorRgb: hexToRgb("#4B0082"),
-            tech: "Python, PyTorch, Attention, Positional Encoding"
-        },
-        { 
-            name: "Python Coding Agent", 
-            description: "Autonomous Python coding assistant with tool-use.", 
-            category: "Agent",
-            link: "https://github.com/SUPR1M3/Agent-0", 
-            icon: Agent, 
-            color: "#20B2AA", 
-            colorRgb: hexToRgb("#20B2AA"),
-            tech: "Python, LLMs, Agents, Orchestration"
-        },
-        { 
-            name: "10M Transformer", 
-            description: "Scaling transformers up to 10M params to learn multi-digit addition.", 
-            category: "AI/ML",
-            link: "https://github.com/SUPR1M3/10M-Transformer", 
-            icon: TenMTransformer, 
-            color: "#E91E63", 
-            colorRgb: hexToRgb("#E91E63"),
-            tech: "Python, Jax, Flax, Optax"
+            tech: "React, CSS, HTML"
         },
     ]), []);
 
@@ -140,11 +140,11 @@ function Projects({ isActive = true }) {
     // lines up cleanly if this list's length is a multiple of WALL_COLUMNS
     // (otherwise the two halves have a ragged last row and the loop visibly
     // jumps). 2 full repeats of the base projects is rarely a clean
-    // multiple on its own (10 projects -> 20, not divisible by 3), so
+    // multiple on its own (11 projects -> 22, not divisible by 3), so
     // instead of a full 3rd repeat of everything, `shortfall` below tops
     // the list up to the next clean multiple with just a few single extra
-    // copies - e.g. today (10 projects) that's 1 extra copy for 21 total,
-    // a 30% smaller DOM than the old always-3x approach (42 nodes vs. 60).
+    // copies - e.g. today (11 projects) that's 2 extra copies for 24 total,
+    // a smaller DOM than the old always-3x approach (48 nodes vs. 66).
     //
     // This means adding (or removing) projects in `baseProjects` above -
     // the plan was to allow up to 3 more - needs no changes here at all;
@@ -160,7 +160,7 @@ function Projects({ isActive = true }) {
     // padding is needed, in order (cycling back to the start if more than
     // one round is needed) - purely a density/taste choice, edit freely.
     const WALL_COLUMNS = 3;
-    const EXTRA_APPEARANCE_ORDER = ['Base Transformer'];
+    const EXTRA_APPEARANCE_ORDER = ['Base Transformer', '10M Transformer'];
     const wallProjects = useMemo(() => {
         const repeats = 2;
         const items = [];
