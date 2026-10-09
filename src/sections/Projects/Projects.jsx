@@ -10,6 +10,7 @@ import LinkBot from '../../assets/LinkBotIcon.png';
 import RocketCanvas from '../../assets/RocketCanvasIcon.png';
 import Transformer from '../../assets/transformer-icon.png'
 import Agent from '../../assets/agent-icon.png'
+import TenMTransformer from '../../assets/10m-transformer-icon.svg'
 
 function Projects({ isActive = true }) {
     // Helper function to convert hex to RGB
@@ -120,6 +121,16 @@ function Projects({ isActive = true }) {
             color: "#20B2AA", 
             colorRgb: hexToRgb("#20B2AA"),
             tech: "Python, LLMs, Agents, Orchestration"
+        },
+        { 
+            name: "10M Transformer", 
+            description: "Scaling small transformers (up to 10M params) to learn multi-digit addition.", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/10M-Transformer", 
+            icon: TenMTransformer, 
+            color: "#E91E63", 
+            colorRgb: hexToRgb("#E91E63"),
+            tech: "Python, PyTorch, Mixture of Experts, Hyperparameter Sweeps"
         },
     ]), []);
 
