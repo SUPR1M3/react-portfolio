@@ -124,13 +124,13 @@ function Projects({ isActive = true }) {
         },
         { 
             name: "10M Transformer", 
-            description: "Scaling small transformers (up to 10M params) to learn multi-digit addition.", 
+            description: "Scaling transformers up to 10M params to learn multi-digit addition.", 
             category: "AI/ML",
             link: "https://github.com/SUPR1M3/10M-Transformer", 
             icon: TenMTransformer, 
             color: "#E91E63", 
             colorRgb: hexToRgb("#E91E63"),
-            tech: "Python, PyTorch, Mixture of Experts, Hyperparameter Sweeps"
+            tech: "Python, Jax, Flax, Optax"
         },
     ]), []);
 
