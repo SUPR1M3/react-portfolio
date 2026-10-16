@@ -11,6 +11,7 @@ import RocketCanvas from '../../assets/RocketCanvasIcon.png';
 import Transformer from '../../assets/transformer-icon.png'
 import Agent from '../../assets/agent-icon.png'
 import TenMTransformer from '../../assets/10m-transformer-icon.svg'
+import AlphaEvolve from '../../assets/alphaevolve-icon.svg'
 
 function Projects({ isActive = true }) {
     // Helper function to convert hex to RGB
@@ -41,6 +42,16 @@ function Projects({ isActive = true }) {
             color: "#E91E63", 
             colorRgb: hexToRgb("#E91E63"),
             tech: "Python, Jax, Flax, Optax"
+        },
+        { 
+            name: "AlphaEvolve", 
+            description: "LLM-driven program evolution for packing circles in a unit square.", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/AlphaEvolve", 
+            icon: AlphaEvolve, 
+            color: "#10B981", 
+            colorRgb: hexToRgb("#10B981"),
+            tech: "Python, Ollama, Qwen3, NumPy, SciPy"
         },
         { 
             name: "Python Coding Agent", 
@@ -143,8 +154,9 @@ function Projects({ isActive = true }) {
     // multiple on its own (11 projects -> 22, not divisible by 3), so
     // instead of a full 3rd repeat of everything, `shortfall` below tops
     // the list up to the next clean multiple with just a few single extra
-    // copies - e.g. today (11 projects) that's 2 extra copies for 24 total,
-    // a smaller DOM than the old always-3x approach (48 nodes vs. 66).
+    // copies - e.g. with 11 projects that's 2 extra copies for 24 total,
+    // a smaller DOM than the old always-3x approach (48 nodes vs. 66);
+    // today's 12 projects divide evenly, so no extra copies are needed.
     //
     // This means adding (or removing) projects in `baseProjects` above -
     // the plan was to allow up to 3 more - needs no changes here at all;
