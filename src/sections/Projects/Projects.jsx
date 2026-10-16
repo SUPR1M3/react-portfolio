@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import styles from './ProjectsStyles.module.css';
-import covfefe from '../../assets/Covfefe.webp';
 import PortFolio from '../../assets/Favicon.png';
 import BookLetter from '../../assets/BookLetterIcon.webp';
 import SpaceInvaders from '../../assets/SpaceShip.webp';
@@ -94,16 +93,6 @@ function Projects({ isActive = true }) {
             tech: "Python, Selenium, SQL"
         },
         { 
-            name: "Covfefe", 
-            description: "Zomato for Cafes", 
-            category: "Web App",
-            link: "https://github.com/SUPR1M3/Covfefe", 
-            icon: covfefe, 
-            color: "#8B4513", 
-            colorRgb: hexToRgb("#8B4513"),
-            tech: "React, Node.js, MongoDB"
-        },
-        { 
             name: "BookLetter", 
             description: "Library Database Management System", 
             category: "Database App",
@@ -154,9 +143,8 @@ function Projects({ isActive = true }) {
     // multiple on its own (11 projects -> 22, not divisible by 3), so
     // instead of a full 3rd repeat of everything, `shortfall` below tops
     // the list up to the next clean multiple with just a few single extra
-    // copies - e.g. with 11 projects that's 2 extra copies for 24 total,
-    // a smaller DOM than the old always-3x approach (48 nodes vs. 66);
-    // today's 12 projects divide evenly, so no extra copies are needed.
+    // copies - e.g. today (11 projects) that's 2 extra copies for 24 total,
+    // a smaller DOM than the old always-3x approach (48 nodes vs. 66).
     //
     // This means adding (or removing) projects in `baseProjects` above -
     // the plan was to allow up to 3 more - needs no changes here at all;
