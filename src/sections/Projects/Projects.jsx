@@ -11,6 +11,7 @@ import Transformer from '../../assets/transformer-icon.png'
 import Agent from '../../assets/agent-icon.png'
 import TenMTransformer from '../../assets/10m-transformer-icon.svg'
 import AlphaEvolve from '../../assets/alphaevolve-icon.svg'
+import PPOJax from '../../assets/ppo-jax-icon.svg'
 
 function Projects({ isActive = true }) {
     // Helper function to convert hex to RGB
@@ -53,8 +54,18 @@ function Projects({ isActive = true }) {
             tech: "Python, Ollama, Qwen3, NumPy, SciPy"
         },
         { 
+            name: "PPO-Jax", 
+            description: "PPO-Clip from scratch in pure JAX, fully jit-compiled training loop.", 
+            category: "AI/ML",
+            link: "https://github.com/SUPR1M3/PPO-Jax", 
+            icon: PPOJax, 
+            color: "#0EA5E9", 
+            colorRgb: hexToRgb("#0EA5E9"),
+            tech: "Python, Jax, Flax, Optax, Gymnax, Brax"
+        },
+        { 
             name: "Python Coding Agent", 
-            description: "Autonomous Python coding assistant with tool-use.", 
+            description: "Basic Python coding assistant with tool-use.", 
             category: "Agent",
             link: "https://github.com/SUPR1M3/Agent-0", 
             icon: Agent, 
@@ -143,7 +154,7 @@ function Projects({ isActive = true }) {
     // multiple on its own (11 projects -> 22, not divisible by 3), so
     // instead of a full 3rd repeat of everything, `shortfall` below tops
     // the list up to the next clean multiple with just a few single extra
-    // copies - e.g. today (11 projects) that's 2 extra copies for 24 total,
+    // copies - e.g. with 11 projects that's 2 extra copies for 24 total,
     // a smaller DOM than the old always-3x approach (48 nodes vs. 66).
     //
     // This means adding (or removing) projects in `baseProjects` above -
