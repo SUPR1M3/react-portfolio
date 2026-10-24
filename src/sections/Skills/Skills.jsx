@@ -139,6 +139,12 @@ function Skills({ isActive = true }) {
                                 Premier collegiate programming competition held all over the world
                             </p>
                         </div>
+                        <div className={styles.achievementItem}>
+                            <h4 className={styles.achievementName}>OpenEvolve Contributor</h4>
+                            <p className={styles.achievementDescription}>
+                                Open-source contribution to OpenEvolve, an open implementation of DeepMind's AlphaEvolve.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 

@@ -72,7 +72,7 @@ There is **no dedicated Navbar/Header component** — that role is split between
   { name: string, category: string, proficiency: number /*0-100*/, icon: string /*emoji*/, color: string /*hex*/, colorRgb: string /*"r, g, b"*/ }
   ```
   Entries: Python (Backend), PyTorch (AI/ML), JAX (AI/ML), NumPy (AI/ML), Hugging Face (AI/ML), HTML (Frontend), CSS (Frontend), JavaScript (Frontend), Node.js (Backend), React (Frontend), C++ (Backend), Docker (Tools).
-- **Achievements** are hardcoded JSX (not array data): "Dean's Merit List", "ACM ICPC Chennai Regional Qualifier".
+- **Achievements** are hardcoded JSX (not array data): "Dean's Merit List", "ACM ICPC Chennai Regional Qualifier", "OpenEvolve Contributor".
 - State: `currentIndex` (active carousel index), `isAutoRotating` (bool), `ringMetrics` (`{radius, cardWidth, cardHeight}`, computed responsively via `ResizeObserver`).
 - Refs: `carouselRef`.
 - Effects: `ResizeObserver` recomputes `ringMetrics`; `setInterval(3000ms)` auto-advances `currentIndex`.
