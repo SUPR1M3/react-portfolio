@@ -145,6 +145,12 @@ function Skills({ isActive = true }) {
                                 Open-source contribution to OpenEvolve, an open implementation of DeepMind's AlphaEvolve.
                             </p>
                         </div>
+                        <div className={styles.achievementItem}>
+                            <h4 className={styles.achievementName}>Anthropic Performance Take-Home: Top 10</h4>
+                            <p className={styles.achievementDescription}>
+                                Ranked in the top 10 on the leaderboard of Anthropic's open performance engineering take-home, optimizing a kernel for a simulated accelerator.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 
